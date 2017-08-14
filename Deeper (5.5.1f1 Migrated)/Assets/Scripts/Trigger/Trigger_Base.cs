@@ -19,6 +19,8 @@ public class Trigger_Base : Deeper_Component {
 
     private InteractionEffects_Base _myIEB;
 
+    private bool _triggered;
+
     private void Start()
     {
         _numPresent = 0;
@@ -45,6 +47,7 @@ public class Trigger_Base : Deeper_Component {
 
         if (timer >= timeInTrigger)
         {
+            _triggered = true;
             _myIEB.OnInteractedSuccess();
             this.enabled = false;
         }
@@ -57,7 +60,8 @@ public class Trigger_Base : Deeper_Component {
 
     public void OnTriggerStay(Collider other)
     {
-        _COICheckIn(other);
+        if (!_triggered)
+            _COICheckIn(other);
     }
 
     public override void PhysUpdate()

@@ -43,10 +43,10 @@ Material:
       second: {r: 0, g: 9.431354e-35, b: 0, a: 9.431317e-35}
     - first:
         name: DiffuseColor
-      second: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+      second: {r: 1, g: 0.39215687, b: 0, a: 1}
     - first:
         name: _EmissionColor
-      second: {r: 1, g: 0.39215687, b: 0, a: 1}
+      second: {r: 0, g: 0, b: 0, a: 1}
     - first:
         name: _FogColor
       second: {r: 0, g: 0, b: 0, a: 1}

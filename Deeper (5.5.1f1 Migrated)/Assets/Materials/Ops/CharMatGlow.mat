@@ -30,7 +30,7 @@ Material:
       second: 2
     - first:
         name: _EmissionMultiplier
-      second: 1
+      second: 5
     - first:
         name: _Gloss
       second: 0.4682218
@@ -43,10 +43,10 @@ Material:
       second: {r: 0, g: 9.431813e-35, b: 0, a: 9.4317764e-35}
     - first:
         name: DiffuseColor
-      second: {r: 0, g: 1, b: 0.25490198, a: 1}
+      second: {r: 1, g: 0, b: 0, a: 1}
     - first:
         name: _EmissionColor
-      second: {r: 1, g: 0, b: 0, a: 1}
+      second: {r: 1, g: 0.04411763, b: 0.04411763, a: 1}
     - first:
         name: _FogColor
       second: {r: 0, g: 0, b: 0, a: 1}

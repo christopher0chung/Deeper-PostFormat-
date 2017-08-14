@@ -6,6 +6,7 @@ public class Camera_Actual : Deeper_Component {
 
     [SerializeField] private List<Transform> OOIs = new List<Transform>();
     [SerializeField] private float distance;
+    [SerializeField] private float vertOffset;
 
     private Vector3 dest;
 
@@ -26,7 +27,7 @@ public class Camera_Actual : Deeper_Component {
             if (t.position.y < lowest) lowest = t.position.y;
         }
         dest = (hold / OOIs.Count) - Vector3.forward * distance;
-        dest.y = lowest - 5;
+        dest.y = lowest - vertOffset;
     }
 
     public override void PhysUpdate()
