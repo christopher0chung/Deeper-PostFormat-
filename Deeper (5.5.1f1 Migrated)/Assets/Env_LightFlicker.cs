@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Light))]
-
 public class Env_LightFlicker : Deeper_Component {
 
-    private Light _l;
+    public Light[] _l;
+    private MeshRenderer _mAssign;
+    public Material mOff;
+    [SerializeField] private Material _mOff;
+    public Material mOn;
+    [SerializeField] private Material _mOn;
     private float _timer;
     private float _offTime;
     private float _onTime;
@@ -17,10 +20,13 @@ public class Env_LightFlicker : Deeper_Component {
     }
 
     void Start () {
-        _l = GetComponent<Light>();
         _timer = Random.Range(0, 3.0f);
         _offTime = Random.Range(.05f, .2f);
         _onTime = Random.Range(.05f, 3f);
+
+        _mAssign = GetComponent<MeshRenderer>();
+        _mOn = new Material(mOn);
+        _mOff = new Material(mOff);
 	}
 
     public override void NormUpdate()
@@ -28,11 +34,19 @@ public class Env_LightFlicker : Deeper_Component {
         _timer += Time.deltaTime;
         if(_timer <= _onTime)
         {
-            _l.enabled = true;
+            foreach (Light l in _l)
+            {
+                l.enabled = true;
+            }
+            _mAssign.material = _mOn;
         }
         else if (_timer > _onTime && _timer <= _offTime + _onTime)
         {
-            _l.enabled = false;
+            foreach (Light l in _l)
+            {
+                l.enabled = false;
+            }
+            _mAssign.material = _mOff;
         }
         else
         {
