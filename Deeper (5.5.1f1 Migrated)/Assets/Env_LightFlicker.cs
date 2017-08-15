@@ -7,9 +7,9 @@ public class Env_LightFlicker : Deeper_Component {
     public Light[] _l;
     private MeshRenderer _mAssign;
     public Material mOff;
-    [SerializeField] private Material _mOff;
+    private Material _mOff;
     public Material mOn;
-    [SerializeField] private Material _mOn;
+    private Material _mOn;
     private float _timer;
     private float _offTime;
     private float _onTime;
