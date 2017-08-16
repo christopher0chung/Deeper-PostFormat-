@@ -2,15 +2,27 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Mech_SuitAirSystem : Deeper_Component
+public class Mech_SuitAirSystem : MonoBehaviour
 {
-    private void Awake()
+    public float tempStartingAirPercent;
+
+    public float breathRate;
+    public float boostRate;
+
+    private float airPerc;
+
+    void Start()
     {
-        Initialize(1000);
+        airPerc = tempStartingAirPercent;
     }
 
-    public override void NormUpdate()
+    public void Breath ()
     {
+        airPerc -= breathRate * Time.deltaTime;
+    }
 
+    public void Boost ()
+    {
+        airPerc -= boostRate * Time.deltaTime;
     }
 }

@@ -4,6 +4,7 @@ using UnityEngine;
 using Rewired;
 
 [RequireComponent (typeof (Rigidbody))]
+[RequireComponent (typeof (Mech_SuitAirSystem))]
 
 public class Controlled_Character : Deeper_Component {
 
@@ -56,6 +57,10 @@ public class Controlled_Character : Deeper_Component {
         }
         set
         {
+            if (value)
+            {
+                //
+            }
             if (value != _b)
             {
                 _b = value;
@@ -106,6 +111,8 @@ public class Controlled_Character : Deeper_Component {
     private float _lightAng;
 
     private float _interactTimerRef;
+
+    private Mech_SuitAirSystem _myMSAS;
     #endregion
 
     #region Deeper_Component Functions
@@ -133,6 +140,8 @@ public class Controlled_Character : Deeper_Component {
 
         _subRef = Deeper_ServicesLocator.instance.GetRef(CharactersEnum.DANI);
         _model = transform.Find("Model").gameObject;
+
+        _myMSAS = GetComponent<Mech_SuitAirSystem>();
     }
 
     public override void NormUpdate()
