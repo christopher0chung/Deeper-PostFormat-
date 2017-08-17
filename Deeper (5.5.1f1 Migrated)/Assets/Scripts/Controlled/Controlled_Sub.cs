@@ -37,8 +37,8 @@ public class Controlled_Sub : Deeper_Component {
 
     public GameObject propPort;
     public GameObject propStbd;
-    private ParticleSystem _portPS;
-    private ParticleSystem _stbdPS;
+    private Particle_Controller _portPS;
+    private Particle_Controller _stbdPS;
 
 #region Deeper_Component Functions
     private void Awake()
@@ -53,8 +53,8 @@ public class Controlled_Sub : Deeper_Component {
 
         _rigidbody = GetComponent<Rigidbody>();
 
-        _portPS = propPort.GetComponentInChildren<ParticleSystem>();
-        _stbdPS = propStbd.GetComponentInChildren<ParticleSystem>();
+        _portPS = propPort.GetComponentInChildren<Particle_Controller>();
+        _stbdPS = propStbd.GetComponentInChildren<Particle_Controller>();
 	}
 
     private Vector3 _rotAng;
@@ -93,10 +93,24 @@ public class Controlled_Sub : Deeper_Component {
         propStbd.transform.localRotation = (Quaternion.Euler(_rotAng));
 
         int bubbleRand = Random.Range(0, 3000);
-        if (_spinRate > 100 & _spinRate > bubbleRand)
+        if (_spinRate > 100)
         {
-            _portPS.Emit(1);
-            _stbdPS.Emit(1);
+            _portPS.transform.localRotation = Quaternion.Euler(0, 180, 0);
+            _portPS.OnOff(true);
+            _stbdPS.transform.localRotation = Quaternion.Euler(0, 180, 0);
+            _stbdPS.OnOff(true);
+        }
+        else if (_spinRate < -100)
+        {
+            _portPS.transform.localRotation = Quaternion.Euler(0, 0, 0);
+            _portPS.OnOff(true);
+            _stbdPS.transform.localRotation = Quaternion.Euler(0, 0, 0);
+            _stbdPS.OnOff(true);
+        }
+        else
+        {
+            _portPS.OnOff(false);
+            _stbdPS.OnOff(false);
         }
     }
     
@@ -160,6 +174,7 @@ public class Controlled_Sub : Deeper_Component {
         {
             Context._linearThrust = Context.moveForceScalar * (Context._maneuveringFloats[0] + Context._maneuveringFloats[1]);
 
+            if (Mathf.Abs(Context._maneuveringFloats[2]) > .15f || Mathf.Abs(Context._maneuveringFloats[3]) > .15f)
             Context._attitudeAngTarget += Context.attitudeSpeedScalar * (Context._maneuveringFloats[2] + Context._maneuveringFloats[3]);
 
             if ((Mathf.Abs(Context._maneuveringFloats[2]) >.7f || Mathf.Abs(Context._maneuveringFloats[3]) >.7f) && Mathf.Abs(Context._attitudeAngActual) > Context.angClamp - 1)

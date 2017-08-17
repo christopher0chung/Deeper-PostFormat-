@@ -25,6 +25,10 @@ public class Controlled_Character : Deeper_Component {
     public Particle_Controller breathPart;
     public Particle_Controller boostPart;
 
+    public Transform modelTransform;
+
+    [HideInInspector] public bool airAvailable;
+
     #region Internal Variables
     private Game_Logic _myGL;
 
@@ -59,7 +63,7 @@ public class Controlled_Character : Deeper_Component {
         {
             if (value)
             {
-                //
+                _myMSAS.Boost();
             }
             if (value != _b)
             {
@@ -80,6 +84,8 @@ public class Controlled_Character : Deeper_Component {
         }
         set
         {
+            if (value)
+                _myMSAS.Breath();
             if (value != _br)
             {
                 _br = value;
@@ -102,8 +108,8 @@ public class Controlled_Character : Deeper_Component {
 
     private Rigidbody _myRB;
 
-    [SerializeField] private Vector3 _walkForceVector;
-    [SerializeField] private Vector3 _boostForceVector;
+    private Vector3 _walkForceVector;
+    private Vector3 _boostForceVector;
 
     private GameObject _subRef;
     private GameObject _model;
@@ -132,8 +138,8 @@ public class Controlled_Character : Deeper_Component {
         controllerNum = Deeper_ServicesLocator.instance.GetInt(thisChar);
 
         _qFacingFwd = Quaternion.Euler(Vector3.zero);
-        _qFacingLeft = Quaternion.Euler(new Vector3(0, 90, 0));
-        _qFacingRight = Quaternion.Euler(new Vector3(0, -90, 0));
+        _qFacingLeft = Quaternion.Euler(new Vector3(0, -91, 0));
+        _qFacingRight = Quaternion.Euler(new Vector3(0, 91, 0));
         currentFacing = Facing.Forward;
 
         _myRB = GetComponent<Rigidbody>();
@@ -290,13 +296,18 @@ public class Controlled_Character : Deeper_Component {
     private float exhaleTime = 2;
     private void _BreathingUpdate()
     {
-        breathingTimer += Time.deltaTime;
-        if (breathingTimer < inhaleTime)
+        if (airAvailable)
+        {
+            breathingTimer += Time.deltaTime;
+            if (breathingTimer < inhaleTime)
+                _breathing = false;
+            if (breathingTimer >= inhaleTime && breathingTimer < inhaleTime + exhaleTime)
+                _breathing = true;
+            if (breathingTimer >= inhaleTime + exhaleTime)
+                breathingTimer -= inhaleTime + exhaleTime;
+        }
+        else
             _breathing = false;
-        if (breathingTimer >= inhaleTime && breathingTimer < inhaleTime + exhaleTime)
-            _breathing = true;
-        if (breathingTimer >= inhaleTime + exhaleTime)
-            breathingTimer -= inhaleTime + exhaleTime;
     }
 
     #endregion
@@ -357,11 +368,11 @@ public class Controlled_Character : Deeper_Component {
         public virtual void Face(Facing f)
         {
             if (f == Facing.Forward)
-                Context.transform.rotation = Quaternion.Slerp(Context.transform.rotation, Context._qFacingFwd, .02f);
+                Context.modelTransform.transform.localRotation = Quaternion.Slerp(Context.modelTransform.transform.localRotation, Context._qFacingFwd, .02f);
             if (f == Facing.Right)
-                Context.transform.rotation = Quaternion.Slerp(Context.transform.rotation, Context._qFacingRight, .02f);
+                Context.modelTransform.transform.localRotation = Quaternion.Slerp(Context.modelTransform.transform.localRotation, Context._qFacingRight, .02f);
             if (f == Facing.Left)
-                Context.transform.rotation = Quaternion.Slerp(Context.transform.rotation, Context._qFacingLeft, .02f);
+                Context.modelTransform.transform.localRotation = Quaternion.Slerp(Context.modelTransform.transform.localRotation, Context._qFacingLeft, .02f);
         }
 
         public void ControlsSetInside(CharactersEnum whoAmI)
@@ -468,7 +479,7 @@ public class Controlled_Character : Deeper_Component {
                 Context._walkForceVector = Vector3.zero;
             }
 
-            if (Context._leftStickInput.y > .75f)
+            if (Context._leftStickInput.y > .75f && Context.airAvailable)
             {
                 Context._boosting = true;
                 Context._boostForceVector = Vector3.up * Context.boostingForceScalar * Context._leftStickInput.y;
@@ -509,7 +520,7 @@ public class Controlled_Character : Deeper_Component {
             IngressCheck();
             InteractCheck(Context.thisChar);
 
-            if (Mathf.Sqrt((Context._leftStickInput.y * Context._leftStickInput.y) + (Context._leftStickInput.x * Context._leftStickInput.x)) > .15f)
+            if (Mathf.Sqrt((Context._leftStickInput.y * Context._leftStickInput.y) + (Context._leftStickInput.x * Context._leftStickInput.x)) > .15f && Context.airAvailable)
             {
                 Context._boosting = true;
                 Context._boostForceVector = Context.boostingForceScalar * new Vector3(Context._leftStickInput.x, Context._leftStickInput.y, 0);
@@ -572,6 +583,9 @@ public class Controlled_Character : Deeper_Component {
         public override void Update()
         {
             Context.transform.position = Context._subRef.transform.position - Vector3.right * 1.76f - Vector3.up * 3.08f;
+
+            Context._myMSAS.Recharge();
+
             if (ReInput.players.GetPlayer(Context.controllerNum).GetButtonDown("Sub Egress"))
             {
                 TransitionTo<Egressing>();

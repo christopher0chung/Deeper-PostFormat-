@@ -29,7 +29,7 @@ public class Particle_Controller : Deeper_Component {
         {
             timer += Time.deltaTime;
 
-            t = 1 / (particlesPerSecond / 2);
+            t = 1 / (particlesPerSecond * .5f);
 
             if (timer > t)
             {

@@ -30,20 +30,20 @@ Material:
       second: 0.5
     - first:
         name: _LineThickness
-      second: 0.015
+      second: 0.005
     - first:
         name: _RefractionIntensity
-      second: 0.1854701
+      second: 0.2
     - first:
         name: _Z_OffsetMultiplier
-      second: 100
+      second: 47.2
     m_Colors:
     - first:
         name: <noninit>
       second: {r: 0, g: 1.1201332e-34, b: 0, a: 1.1201258e-34}
     - first:
         name: _EmissiveColor
-      second: {r: 0.39699998, g: 0.39699998, b: 0.39699998, a: 1}
+      second: {r: 0.5441177, g: 0.5441177, b: 0.5441177, a: 0.011764706}
     - first:
         name: _LineColor
-      second: {r: 0.10711596, g: 0.12199997, b: 0.11337746, a: 1}
+      second: {r: 0.27205884, g: 0.2800606, b: 0.2800606, a: 1}
