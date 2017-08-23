@@ -33,7 +33,7 @@ public class Current_VisualizerManager : Deeper_Component {
 
 	public override void PostUpdate () {
 
-        Debug.DrawLine(transform.position, ProjectedLoc());
+        //Debug.DrawLine(transform.position, ProjectedLoc());
 
         for (int i = 0; i < myTimes.Count; i++)
         {
@@ -45,23 +45,31 @@ public class Current_VisualizerManager : Deeper_Component {
             }
             if (myTimes[i] > lifeTime * 2)
             {
-                myTimes.Remove(myTimes[i]);
+                //myTimes.Remove(myTimes[i]);
 
-                GameObject toDie = myObjs[i];
-                myObjs.Remove(toDie);
-                toDie.GetComponent<Deeper_Component>().Cleanup();
+                //GameObject toDie = myObjs[i];
+                //myObjs.Remove(toDie);
+                //toDie.GetComponent<Deeper_Component>().Cleanup();
+
+                myTimes[i] = 0;
+                myObjs[i].transform.position = Where();
+                myObjs[i].GetComponent<Particle_Controller>().OnOff(true);
+                myObjs[i].GetComponent<Rigidbody>().velocity = Vector3.zero;
+                myObjs[i].GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
+                myObjs[i].GetComponent<Rigidbody>().AddForce(new Vector3(Random.Range(-fMag, fMag), Random.Range(-fMag, fMag), 0), ForceMode.Impulse);
+                myObjs[i].GetComponent<Rigidbody>().AddTorque(Vector3.forward * Random.Range(-tMag, tMag), ForceMode.Impulse);
             }
         }
 
-        if (myObjs.Count <= num)
-        {
-            GameObject g = Instantiate(prefab, Where(), Quaternion.identity);
-            g.GetComponent<Particle_Controller>().OnOff(true);
-            g.GetComponent<Rigidbody>().AddForce(new Vector3(Random.Range(-fMag, fMag), Random.Range(-fMag, fMag), 0), ForceMode.Impulse);
-            g.GetComponent<Rigidbody>().AddTorque(Vector3.forward * Random.Range(-tMag, tMag), ForceMode.Impulse);
-            myObjs.Add(g);
-            myTimes.Add(0);
-        }
+        //if (myObjs.Count <= num)
+        //{
+        //    GameObject g = Instantiate(prefab, Where(), Quaternion.identity);
+        //    g.GetComponent<Particle_Controller>().OnOff(true);
+        //    g.GetComponent<Rigidbody>().AddForce(new Vector3(Random.Range(-fMag, fMag), Random.Range(-fMag, fMag), 0), ForceMode.Impulse);
+        //    g.GetComponent<Rigidbody>().AddTorque(Vector3.forward * Random.Range(-tMag, tMag), ForceMode.Impulse);
+        //    myObjs.Add(g);
+        //    myTimes.Add(0);
+        //}
 
 	}
 

@@ -5,6 +5,6 @@ using UnityEngine;
 public class Info_Physical : MonoBehaviour {
 
     public bool CanStandOn;
-    public bool CanDoSomethingElse;
+    public bool IsPlayer;
 
 }

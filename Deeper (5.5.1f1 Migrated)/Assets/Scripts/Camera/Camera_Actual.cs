@@ -5,8 +5,16 @@ using UnityEngine;
 public class Camera_Actual : Deeper_Component {
 
     [SerializeField] private List<Transform> OOIs = new List<Transform>();
-    [SerializeField] private float distance;
-    [SerializeField] private float vertOffset;
+
+    [SerializeField] private Transform sub_Ref;
+
+    [SerializeField] private float minDistance;
+    [SerializeField] private float maxDistance;
+    [SerializeField] private float zoomRange;
+
+    [SerializeField] private float minVertOffset;
+    [SerializeField] private float maxVertOffset;
+
 
     private Vector3 dest;
 
@@ -26,8 +34,10 @@ public class Camera_Actual : Deeper_Component {
             hold += t.position;
             if (t.position.y < lowest) lowest = t.position.y;
         }
-        dest = (hold / OOIs.Count) - Vector3.forward * distance;
-        dest.y = lowest - vertOffset;
+        dest = (hold / OOIs.Count) - Vector3.forward * minDistance;
+
+        dest.y = lowest - Mathf.Lerp(-maxVertOffset, -minVertOffset, Vector3.Distance(sub_Ref.position, ProjectedLoc()) / zoomRange); ;
+        dest.z = Mathf.Lerp(-maxDistance, -minDistance, Vector3.Distance(sub_Ref.position, ProjectedLoc()) / zoomRange);
     }
 
     public override void PhysUpdate()
@@ -43,5 +53,10 @@ public class Camera_Actual : Deeper_Component {
     {
         OOIs.Clear();
         OOIs = o;
+    }
+
+    private Vector3 ProjectedLoc()
+    {
+        return transform.position + transform.forward * (-transform.position.z / Mathf.Cos(transform.eulerAngles.x * Mathf.Deg2Rad));
     }
 }
