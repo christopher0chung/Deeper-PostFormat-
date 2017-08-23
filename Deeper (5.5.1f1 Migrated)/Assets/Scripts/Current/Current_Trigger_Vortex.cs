@@ -27,7 +27,7 @@ public class Current_Trigger_Vortex : Current_Trigger {
         if (dist >= radThresh)
             magnitude = Mathf.Lerp(magMax, 0, ((dist - radThresh) / (radMax - radThresh)));
         else
-            magnitude = 0;
+            magnitude = Mathf.Lerp(0, magMax, (dist / radThresh));
 
         if (CCW)
             ccwInt = 1;

@@ -10,6 +10,8 @@ public class Current_VisualizerManager : Deeper_Component {
     public List<float> myTimes;
 
     public int num;
+    public int range;
+    public float lifeTime;
     public float fMag;
     public float tMag;
 
@@ -23,22 +25,25 @@ public class Current_VisualizerManager : Deeper_Component {
             g.GetComponent<Rigidbody>().AddForce(new Vector3(Random.Range(-fMag, fMag), Random.Range(-fMag, fMag), 0), ForceMode.Impulse);
             g.GetComponent<Rigidbody>().AddTorque(Vector3.forward * Random.Range(-tMag, tMag), ForceMode.Impulse);
             myObjs.Add(g);
-            myTimes.Add(Random.Range(0.0f, 5.0f));
+            myTimes.Add(((float)i / num) * lifeTime * 2);
         }
 	}
 
     private float timer;
 
 	public override void PostUpdate () {
+
+        Debug.DrawLine(transform.position, ProjectedLoc());
+
         for (int i = 0; i < myTimes.Count; i++)
         {
             myTimes[i] += Time.deltaTime;
 
-            if (myTimes[i] > 5)
+            if (myTimes[i] > lifeTime)
             {
                 myObjs[i].GetComponent<Particle_Controller>().OnOff(false);
             }
-            if (myTimes[i] > 10)
+            if (myTimes[i] > lifeTime * 2)
             {
                 myTimes.Remove(myTimes[i]);
 
@@ -55,13 +60,20 @@ public class Current_VisualizerManager : Deeper_Component {
             g.GetComponent<Rigidbody>().AddForce(new Vector3(Random.Range(-fMag, fMag), Random.Range(-fMag, fMag), 0), ForceMode.Impulse);
             g.GetComponent<Rigidbody>().AddTorque(Vector3.forward * Random.Range(-tMag, tMag), ForceMode.Impulse);
             myObjs.Add(g);
-            myTimes.Add(Random.Range(0.0f, 2.0f));
+            myTimes.Add(0);
         }
 
 	}
 
     private Vector3 Where()
     {
-        return (transform.position + Vector3.up * Random.Range(-20, 20) + Vector3.right * Random.Range(-20, 20));
+        Vector3 pos = (transform.position + Vector3.up * Random.Range(-range, range) + Vector3.right * Random.Range(-range, range));
+        pos.z = 0;
+        return pos;
+    }
+
+    private Vector3 ProjectedLoc()
+    {
+        return transform.position + transform.forward * (-transform.position.z / Mathf.Cos(transform.eulerAngles.x * Mathf.Deg2Rad));
     }
 }
