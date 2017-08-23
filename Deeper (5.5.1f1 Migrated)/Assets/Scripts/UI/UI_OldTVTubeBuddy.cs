@@ -21,6 +21,8 @@ public class UI_OldTVTubeBuddy : MonoBehaviour {
 
     private bool _transitionStaticInProgress;
 
+    private bool _deathInProgress;
+
 	void Start () {
         //_myT = GetComponent<OLDTVTube>();
         _myS = GetComponent<OLDTVScreen>();
@@ -29,26 +31,35 @@ public class UI_OldTVTubeBuddy : MonoBehaviour {
         _fsm.TransitionTo<FuzzOff>();
 
         Deeper_EventManager.instance.Register<Deeper_Event_CamSwitch>(SwitchStaticHandler);
+        Deeper_EventManager.instance.Register<Deeper_Event_Death>(DeathStaticHandler);
         Deeper_EventManager.instance.Register<Deeper_Event_LevelUnload>(Unregister);
     }
 
     void Update () {
-        if (!_transitionStaticInProgress)
-            _fsm.Update();
+        if (!_deathInProgress)
+        {
+            if (!_transitionStaticInProgress)
+                _fsm.Update();
+            else
+                SwitchStaticUpdate();
+        }
         else
-            SwitchStaticUpdate();
+        {
+            _fsm.Update();
+        }
 
         linePos.intVal += 2;
         _myS.staticVertical = ((float) linePos.intVal) / 1000;
 
-        if (Input.GetKeyDown(KeyCode.Space))
-            _fsm.TransitionTo<FuzzPositional>();
+        //if (Input.GetKeyDown(KeyCode.Space))
+        //    _fsm.TransitionTo<FuzzPositional>();
 	}
 
     #region Handlers
     private void Unregister(Deeper_Event e)
     {
         Deeper_EventManager.instance.Unregister<Deeper_Event_LevelUnload>(Unregister);
+        Deeper_EventManager.instance.Unregister<Deeper_Event_Death>(DeathStaticHandler);
         Deeper_EventManager.instance.Unregister<Deeper_Event_CamSwitch>(SwitchStaticHandler);
     }
 
@@ -57,6 +68,12 @@ public class UI_OldTVTubeBuddy : MonoBehaviour {
         //Debug.Log("Static Event Fired");
         _transitionStaticInProgress = true;
         _switchStaticMagnitude = .5f;
+    }
+
+    private void DeathStaticHandler(Deeper_Event e)
+    {
+        _deathInProgress = true;
+        _fsm.TransitionTo<FuzzDeath>();
     }
     #endregion
 
@@ -153,5 +170,15 @@ public class UI_OldTVTubeBuddy : MonoBehaviour {
         }
     }
 
-#endregion
+    private class FuzzDeath : State_Base
+    {
+        public override void Update()
+        {
+            float n = Mathf.Lerp(Context._myS.noiseMagnetude, .8f, .05f);
+            Context._myS.staticMagnetude = Context._myS.noiseMagnetude = n;
+            Context._myS.chromaticAberrationMagnetude = n / 2;
+        }
+    }
+
+    #endregion
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Rewired;
+using UnityEngine.SceneManagement;
 
 public class Game_Logic : MonoBehaviour {
 
@@ -20,6 +21,32 @@ public class Game_Logic : MonoBehaviour {
 
     public List<Interactable_Base> _levelInteractables = new List<Interactable_Base>();
 
+    #region Scene Manager
+
+    //private static Deeper_SceneManager _dsm;
+    //public static Deeper_SceneManager DSM
+    //{
+    //    get
+    //    {
+    //        if (_dsm == null)
+    //            _dsm = new Deeper_SceneManager();
+    //        return _dsm;
+    //    }
+    //}
+
+    public void SceneChangeHandler(Deeper_Event e)
+    {
+        Deeper_Event_LevelLoad ll = e as Deeper_Event_LevelLoad;
+
+        Deeper_EventManager.instance.Unregister<Deeper_Event_LevelLoad>(SceneChangeHandler);
+
+        Deeper_EventManager.instance.Fire(new Deeper_Event_LevelUnload());
+
+        SceneManager.LoadScene(0);
+    }
+
+    #endregion
+
     private void Start()
     {
         for (int i = 1; i < Menus.Length; i++)
@@ -29,6 +56,8 @@ public class Game_Logic : MonoBehaviour {
 
         _fsm = new FSM<Game_Logic>(this);
         _fsm.TransitionTo<Paused>();
+
+        Deeper_EventManager.instance.Register<Deeper_Event_LevelLoad>(SceneChangeHandler);
     }
 
     void Update() {

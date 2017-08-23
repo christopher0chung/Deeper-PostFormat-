@@ -1011,3 +1011,29 @@ public class Task_Interaction_DialogueChoice : Task_Interaction
 //}
 
 #endregion
+
+#region Death Tasks
+
+public class DeathTask_Drown : Task
+{
+    public override void Init()
+    {
+        Deeper_EventManager.instance.Fire(new Deeper_Event_Death(DeathTypes.Drown));
+        timer = 0;
+        Deeper_EventManager.instance.Fire(new Deeper_Event_ControlScheme(ControlStates.Interrupted));
+    }
+
+    private float timer;
+
+    public override void TaskDeeperNormUpdate()
+    {
+        timer += Time.deltaTime;
+
+        if (timer > 3)
+        {
+            Deeper_EventManager.instance.Fire(new Deeper_Event_LevelLoad(0));
+        }
+    }
+}
+
+#endregion

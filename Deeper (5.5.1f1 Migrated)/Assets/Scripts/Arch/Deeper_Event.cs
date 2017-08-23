@@ -94,3 +94,19 @@ public class Deeper_Event_LinkedInteractionInitiated : Deeper_Event
         callingInteractable = callingLinkedInteractable;
     }
 }
+
+//--------------------------------------------
+// Death
+//--------------------------------------------
+
+public enum DeathTypes { Drown }
+
+public class Deeper_Event_Death : Deeper_Event
+{
+    public DeathTypes dT;
+
+    public Deeper_Event_Death (DeathTypes typeOfDeath)
+    {
+        dT = typeOfDeath;
+    }
+}

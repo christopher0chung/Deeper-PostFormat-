@@ -111,7 +111,10 @@ public class Mech_SuitAirSystem : Deeper_Component
                 TransitionTo<AirAvailable>();
 
             if (drowningTimer >= 10)
-                Debug.Log(Context.myCC.thisChar.ToString() + " has drowned.");
+            {
+                //Debug.Log(Context.myCC.thisChar.ToString() + " has drowned.");
+                Deeper_ServicesLocator.instance.TaskManager.AddTask(new DeathTask_Drown());
+            }
         }
 
         public override void OnExit()
