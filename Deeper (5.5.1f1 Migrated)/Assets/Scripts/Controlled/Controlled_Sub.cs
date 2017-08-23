@@ -5,7 +5,7 @@ using Rewired;
 
 [RequireComponent(typeof(Rigidbody))] 
 
-public class Controlled_Sub : Deeper_Component {
+public class Controlled_Sub : Deeper_Component, ICurrentable {
 
     private FSM<Controlled_Sub> _fsm;
 
@@ -79,8 +79,23 @@ public class Controlled_Sub : Deeper_Component {
 
         if (canDrive)
             _rigidbody.AddForce(Quaternion.Euler(0, 0, _attitudeAngActual) * Vector3.right * _linearThrust + _deltaBuoyancyForceApplied * Vector3.up);
+
+        _rigidbody.AddForce(_currentForce);
+        //Debug.Log(_currentForce);
+        _currentForce = Vector3.zero;
     }
     #endregion
+
+#region Interface
+
+    private Vector3 _currentForce;
+
+    public void CurrentIs(Vector3 current)
+    {
+        _currentForce += current;
+    }
+
+#endregion
 
 #region Bubbles and Animation
 

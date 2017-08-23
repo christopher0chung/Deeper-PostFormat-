@@ -6,7 +6,7 @@ using Rewired;
 [RequireComponent (typeof (Rigidbody))]
 [RequireComponent (typeof (Mech_SuitAirSystem))]
 
-public class Controlled_Character : Deeper_Component {
+public class Controlled_Character : Deeper_Component, ICurrentable {
 
     public CharactersEnum thisChar;
     private int controllerNum;
@@ -169,7 +169,21 @@ public class Controlled_Character : Deeper_Component {
             _myRB.AddForce(_boostForceVector);
 
         myLight.transform.localRotation = Quaternion.Slerp(myLight.transform.localRotation, Quaternion.Euler(new Vector3(_lightAng, 0, 0)), .1f);
+
+        _myRB.AddForce(_currentForce / 10);
+        _currentForce = Vector3.zero;
     }
+    #endregion
+
+    #region Interface
+
+    private Vector3 _currentForce;
+
+    public void CurrentIs(Vector3 current)
+    {
+        _currentForce += current;
+    }
+
     #endregion
 
     #region Context Functions

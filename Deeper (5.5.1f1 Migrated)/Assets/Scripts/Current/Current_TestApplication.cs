@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Current_TestApplication : MonoBehaviour {
 
+    public Current_Test currentSource;
     public Vector3 current;
 
 	void Start () {
@@ -11,7 +12,7 @@ public class Current_TestApplication : MonoBehaviour {
 	}
 	
 	void FixedUpdate () {
-        //current = GetComponent<Current_Test>().GetForce(transform.position, GetComponent<Rigidbody>().velocity);
-        //GetComponent<Rigidbody>().AddForce(current);
-	}
+        current = currentSource.GetForce(transform.position);
+        GetComponent<Rigidbody>().AddForce(current);
+    }
 }
