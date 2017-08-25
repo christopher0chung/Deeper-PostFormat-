@@ -27,6 +27,8 @@ public class Controlled_Character : Deeper_Component, ICurrentable {
 
     public Transform modelTransform;
 
+    public SphereCollider ingressTrigger;
+
     [HideInInspector] public bool airAvailable;
 
     #region Internal Variables
@@ -415,7 +417,7 @@ public class Controlled_Character : Deeper_Component, ICurrentable {
 
         public virtual void IngressCheck()
         {
-            if (Vector3.Distance(Context._subRef.transform.position, Context.transform.position) < 4)
+            if (Context.ingressTrigger.bounds.Contains(Context.transform.position))
                 if (ReInput.players.GetPlayer(Context.controllerNum).GetButtonDown("Player Action"))
                 {
                     TransitionTo<Ingressing>();

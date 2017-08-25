@@ -46,7 +46,7 @@ Material:
       second: {r: 0, g: 1, b: 0.25490198, a: 1}
     - first:
         name: _EmissionColor
-      second: {r: 0, g: 1, b: 0.67058825, a: 1}
+      second: {r: 0.44528547, g: 0.6476495, b: 1.0441177, a: 1}
     - first:
         name: _FogColor
       second: {r: 0, g: 0, b: 0, a: 1}

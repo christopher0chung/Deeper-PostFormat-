@@ -66,7 +66,23 @@ public class Trigger_Base : Deeper_Component {
 
     public override void PhysUpdate()
     {
-        _CheckedTimerToTrigger();
-        _COIClear();
+        //_CheckedTimerToTrigger();
+        //_COIClear();
+
+        for (int i = 0; i < rbOfInterest.Length; i++)
+        {
+            foreach(Collider c in GetComponentsInChildren<Collider>())
+            {
+                if (c.bounds.Contains(rbOfInterest[i].transform.position))
+                    timer += Time.fixedDeltaTime;
+            }
+        }
+
+        if (timer >= timeInTrigger)
+        {
+            _triggered = true;
+            _myIEB.OnInteractedSuccess();
+            this.enabled = false;
+        }
     }
 }

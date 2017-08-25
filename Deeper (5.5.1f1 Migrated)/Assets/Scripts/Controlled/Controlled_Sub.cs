@@ -35,12 +35,17 @@ public class Controlled_Sub : Deeper_Component, ICurrentable {
     private Vector3 totalForce;
     private float angClamp = 25;
 
-    public GameObject propPort;
-    public GameObject propStbd;
-    private Particle_Controller _portPS;
-    private Particle_Controller _stbdPS;
+    //public GameObject propPort;
+    //public GameObject propStbd;
+    //private Particle_Controller _portPS;
+    //private Particle_Controller _stbdPS;
 
-#region Deeper_Component Functions
+    public GameObject prop;
+    private Particle_Controller _PSCFwd;
+    private Particle_Controller _PSCAft;
+
+
+    #region Deeper_Component Functions
     private void Awake()
     {
         Initialize(3000);
@@ -53,9 +58,11 @@ public class Controlled_Sub : Deeper_Component, ICurrentable {
 
         _rigidbody = GetComponent<Rigidbody>();
 
-        _portPS = propPort.GetComponentInChildren<Particle_Controller>();
-        _stbdPS = propStbd.GetComponentInChildren<Particle_Controller>();
-	}
+        //_portPS = propPort.GetComponentInChildren<Particle_Controller>();
+        //_stbdPS = propStbd.GetComponentInChildren<Particle_Controller>();
+        _PSCFwd = prop.transform.Find("Fwd").GetComponent<Particle_Controller>();
+        _PSCAft = prop.transform.Find("Aft").GetComponent<Particle_Controller>();
+    }
 
     private Vector3 _rotAng;
     private float _spinRate;
@@ -104,28 +111,38 @@ public class Controlled_Sub : Deeper_Component, ICurrentable {
         _spinRate = Mathf.Lerp(_spinRate, _linearThrust, .05f);
         _rotAng.z -= _spinRate / 20;
         _rotAng.z = (_rotAng.z + 360) % 360;
-        propPort.transform.localRotation = (Quaternion.Euler(_rotAng));
-        propStbd.transform.localRotation = (Quaternion.Euler(_rotAng));
+        //propPort.transform.localRotation = (Quaternion.Euler(_rotAng));
+        //propStbd.transform.localRotation = (Quaternion.Euler(_rotAng));
+        prop.transform.localRotation = Quaternion.Euler(_rotAng);
 
-        int bubbleRand = Random.Range(0, 3000);
         if (_spinRate > 100)
         {
-            _portPS.transform.localRotation = Quaternion.Euler(0, 180, 0);
-            _portPS.OnOff(true);
-            _stbdPS.transform.localRotation = Quaternion.Euler(0, 180, 0);
-            _stbdPS.OnOff(true);
+            //_portPS.transform.localRotation = Quaternion.Euler(0, 180, 0);
+            //_portPS.OnOff(true);
+            //_stbdPS.transform.localRotation = Quaternion.Euler(0, 180, 0);
+            //_stbdPS.OnOff(true);
+            //_PSCFwd.transform.localRotation = Quaternion.Euler(0, 90, 0);
+
+            _PSCFwd.OnOff(true);
+            _PSCAft.OnOff(false);
         }
         else if (_spinRate < -100)
         {
-            _portPS.transform.localRotation = Quaternion.Euler(0, 0, 0);
-            _portPS.OnOff(true);
-            _stbdPS.transform.localRotation = Quaternion.Euler(0, 0, 0);
-            _stbdPS.OnOff(true);
+            //_portPS.transform.localRotation = Quaternion.Euler(0, 0, 0);
+            //_portPS.OnOff(true);
+            //_stbdPS.transform.localRotation = Quaternion.Euler(0, 0, 0);
+            //_stbdPS.OnOff(true);
+            //_PSCFwd.transform.localRotation = Quaternion.Euler(0, 270, 0);
+
+            _PSCFwd.OnOff(false);
+            _PSCAft.OnOff(true);
         }
         else
         {
-            _portPS.OnOff(false);
-            _stbdPS.OnOff(false);
+            //_portPS.OnOff(false);
+            //_stbdPS.OnOff(false);
+            _PSCFwd.OnOff(false);
+            _PSCAft.OnOff(false);
         }
     }
     

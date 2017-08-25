@@ -167,7 +167,8 @@ public class Game_DialogueManager : Deeper_Component {
         {
             if (Context.activeLine == null)
             {
-                loadDelayTime = Context.activeChain.LinesAndChoices[0].delayTime;
+                //loadDelayTime = Context.activeChain.LinesAndChoices[0].delayTime;
+                loadDelayTime = 0;
             }
 
             else
@@ -274,7 +275,7 @@ public class Game_DialogueManager : Deeper_Component {
             //Debug.Log("In Load");
             _Clear();
             timer = 0;
-            PullTime();
+            //PullTime();
         }
 
         public override void Update()
