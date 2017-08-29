@@ -420,6 +420,7 @@ public class Deeper_MenuAid
         _menuActionsDict.Add(MenuItemActions.None, DoNothing);
         _menuActionsDict.Add(MenuItemActions.SetP1Doc, SetP1Doc);
         _menuActionsDict.Add(MenuItemActions.ChangeCamTests, Test);
+        _menuActionsDict.Add(MenuItemActions.Restart, Restart);
     }
     #endregion
 
@@ -440,6 +441,11 @@ public class Deeper_MenuAid
     {
         GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>().clearFlags = CameraClearFlags.SolidColor;
     }
+
+    private void Restart()
+    {
+        Debug.Log("Restart");
+    }
     #endregion
 
     public Action GetAction (MenuItemActions mIM)
@@ -450,4 +456,4 @@ public class Deeper_MenuAid
     }
 }
 
-public enum MenuItemActions { None, SetP1Doc, ChangeCamTests }
+public enum MenuItemActions { None, SetP1Doc, ChangeCamTests, Restart }

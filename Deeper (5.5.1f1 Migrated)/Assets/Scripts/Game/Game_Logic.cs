@@ -15,7 +15,9 @@ public class Game_Logic : MonoBehaviour {
     public GameObject OpsLight;
     public GameObject Sub;
 
-    public Deeper_MenuObject[] Menus = new Deeper_MenuObject[1];
+    //public Deeper_MenuObject[] Menus = new Deeper_MenuObject[1];
+
+    public Deeper_Menu0_Type0 menuBase;
 
     private FSM<Game_Logic> _fsm;
 
@@ -49,10 +51,10 @@ public class Game_Logic : MonoBehaviour {
 
     private void Start()
     {
-        for (int i = 1; i < Menus.Length; i++)
-        {
-            Menus[i].Unpause();
-        }
+        //for (int i = 1; i < Menus.Length; i++)
+        //{
+        //    Menus[i].Unpause();
+        //}
 
         _fsm = new FSM<Game_Logic>(this);
         _fsm.TransitionTo<Paused>();
@@ -290,6 +292,15 @@ public class Game_Logic : MonoBehaviour {
 
     #endregion
 
+    #region Public Functions for Menu
+
+    public void UnpauseGameLogic()
+    {
+        _fsm.TransitionTo<Playing>();
+    }
+
+    #endregion
+
     #region States
     private class State_Base : FSM<Game_Logic>.State { }
 
@@ -298,7 +309,9 @@ public class Game_Logic : MonoBehaviour {
         public override void OnEnter()
         {
             Deeper_ServicesLocator.instance.Pause();
-            Context.Menus[0].ExternalActivate();
+            //Context.Menus[0].ExternalActivate();
+
+            Context.menuBase.TurnOn();
 
             Deeper_EventManager.instance.Fire(new Deeper_Event_ControlScheme(ControlStates.Menu));
 
@@ -319,10 +332,10 @@ public class Game_Logic : MonoBehaviour {
         public override void OnEnter()
         {
             Deeper_ServicesLocator.instance.Unpause();
-            foreach (Deeper_MenuObject g in Context.Menus)
-            {
-                g.Unpause();
-            }
+            //foreach (Deeper_MenuObject g in Context.Menus)
+            //{
+            //    g.Unpause();
+            //}
 
             if (Context.Doc.gameObject.GetComponent<Collider>().enabled)
                 Deeper_EventManager.instance.Fire(new Deeper_Event_ControlScheme(ControlStates.Doc_Outside));
