@@ -10,6 +10,15 @@ public class Deeper_TaskManager : Deeper_Component
     void Awake()
     {
         Initialize(5000);
+        Deeper_EventManager.instance.Register<Deeper_Event_LevelUnload>(PreloadEventHandler);
+    }
+
+    void PreloadEventHandler(Deeper_Event e)
+    {
+        foreach (Task t in TasksList)
+        {
+            t.SetStatus(TaskStatus.Aborted);
+        }
     }
 
     void Update()

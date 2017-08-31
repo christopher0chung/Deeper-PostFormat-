@@ -44,7 +44,7 @@ public class Game_Logic : MonoBehaviour {
 
         Deeper_EventManager.instance.Fire(new Deeper_Event_LevelUnload());
 
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene(2);
     }
 
     #endregion

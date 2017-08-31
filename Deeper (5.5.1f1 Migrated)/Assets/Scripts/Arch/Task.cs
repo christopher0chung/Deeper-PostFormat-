@@ -1037,3 +1037,64 @@ public class DeathTask_Drown : Task
 }
 
 #endregion
+
+#region SmokeMonster Task
+
+public class Task_SmokeMonster : Task
+{
+    Material onMat;
+    Material offMat;
+    GameObject monster;
+
+    GameObject playerOfConcern;
+
+    GameObject[] l;
+    GameObject[] h;
+
+    bool onOff;
+
+    public override void Init()
+    {
+        onMat = (Material) Resources.Load("HallwayMaterials/Glow");
+        offMat = (Material)Resources.Load("HallwayMaterials/NoGlow");
+        monster = GameObject.Find("SmokeMonster");
+
+        if (GameObject.Find("Ops").transform.position.x > GameObject.Find("Doc").transform.position.x)
+            playerOfConcern = GameObject.Find("Doc");
+        else
+            playerOfConcern = GameObject.Find("Ops");
+
+        Debug.Assert(onMat != null, "onMat is missing");
+        Debug.Assert(offMat != null, "offMat is missing");
+        Debug.Assert(monster != null, "monster is missing");
+
+        l = GameObject.FindGameObjectsWithTag("HallLight");
+        h = GameObject.FindGameObjectsWithTag("Hall");
+    }
+
+    private float timer;
+
+    public override void TaskDeeperNormUpdate()
+    {
+        timer += Time.deltaTime;
+        if (timer > 1)
+        {
+            timer = 0;
+            onOff = !onOff;
+            foreach (GameObject x in l)
+            {
+                x.SetActive(onOff);
+            }
+
+            foreach (GameObject x in h)
+            {
+                if (onOff)
+                    x.GetComponent<MeshRenderer>().material = onMat;
+                else
+                    x.GetComponent<MeshRenderer>().material = offMat;
+            }
+        }
+    }
+}
+
+#endregion

@@ -563,7 +563,10 @@ public class Deeper_ServicesLocator {
         get
         {
             if (_tm == null)
-                _tm = GameObject.Find("Managers").AddComponent<Deeper_TaskManager>();
+            {
+                GameObject tm = new GameObject();
+                _tm = tm.AddComponent<Deeper_TaskManager>();
+            }
             return _tm;
         }
     }

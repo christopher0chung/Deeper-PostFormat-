@@ -116,6 +116,6 @@ public class Deeper_GameUpdateManager {
     public void Unsubscribe (Deeper_Component dGO)
     {
         _subDGO.Remove(dGO);
-        Debug.Log(_subDGO.Count);
+        //Debug.Log(_subDGO.Count);
     }
 }

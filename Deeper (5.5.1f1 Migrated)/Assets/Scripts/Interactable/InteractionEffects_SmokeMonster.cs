@@ -4,16 +4,13 @@ using UnityEngine;
 
 public class InteractionEffects_SmokeMonster : InteractionEffects_Base
 {
-    public GameObject smokeMonster;
-
     private void Start()
     {
-        smokeMonster.SetActive(false);
     }
 
     public override void OnInteractedSuccess()
     {
-        smokeMonster.SetActive(true);
+        Deeper_ServicesLocator.instance.TaskManager.AddTask(new Task_SmokeMonster());
     }
 
     public override void OnInteractedFail()
