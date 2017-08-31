@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: 599dc7198eb26d04b949ca47d406327e
+timeCreated: 1504196180
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Ailerons
+  fontNames:
+  - Ailerons
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

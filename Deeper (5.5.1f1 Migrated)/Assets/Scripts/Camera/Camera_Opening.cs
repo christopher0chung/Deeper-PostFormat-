@@ -17,7 +17,8 @@ public class Camera_Opening : MonoBehaviour {
     private float yRateTgt;
 
     private float dist;
-    private float distTgt;
+    private float distRate;
+    private float distRateTgt;
 
     private float timer;
 
@@ -26,18 +27,18 @@ public class Camera_Opening : MonoBehaviour {
         xRateTgt = Random.Range(-5.0f, 5.0f);
         yRateTgt = Random.Range(-5.0f, 5.0f);
         dist = Random.Range(11.7f, 17.7f);
-        distTgt = Random.Range(11.7f, 17.7f);
+        distRateTgt = Random.Range(11.7f, 17.7f);
     }
 
     void Update () {
 
         timer += Time.deltaTime;
-        if (timer >= 5)
+        if (timer >= 10)
         {
             timer = 0;
             xRateTgt = Random.Range(-5.0f, 5.0f);
             yRateTgt = Random.Range(-15.0f, 15.0f);
-            distTgt = Random.Range(11.7f, 17.7f);
+            distRateTgt = Random.Range(11.7f, 17.7f);
         }
 
         xRate = Mathf.Lerp(xRate, xRateTgt, .03f);
@@ -50,7 +51,10 @@ public class Camera_Opening : MonoBehaviour {
         transform.LookAt(tgt);
         pivot.localRotation = Quaternion.Euler(new Vector3(0, yRot, xRot));
 
-        dist = Mathf.MoveTowards(dist, distTgt, .015f);
+        distRate = Mathf.Lerp(distRate, distRateTgt, .03f);
+        dist += distRate;
+        dist = Mathf.Clamp(dist, 11.7f, 17.7f);
+
         transform.localPosition = new Vector3(dist, 0, 0);
 	}
 }

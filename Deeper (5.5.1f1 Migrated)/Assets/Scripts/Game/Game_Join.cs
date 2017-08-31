@@ -4,10 +4,20 @@ using UnityEngine;
 using System;
 using Rewired;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class Game_Join : MonoBehaviour {
 
     public GameObject cube;
+
+    public TMPro.TextMeshPro field;
+
+    private string connected0 = "Standing by... Press ANY BUTTON to Connect";
+    private string connected1 = "Terminal 1 Connected. Terminal 2: Press ANY BUTTON";
+    private string connected2 = "Terminal 2 Connected. Terminal 1: Press ANY BUTTON";
+    private string connectedBoth = "Terminals 1 and 2 Connected. Press 'Start' to begin";
+
+    private FSM<Game_Join> _fsm;
 
     private bool _p1Connected
     {
@@ -86,19 +96,180 @@ public class Game_Join : MonoBehaviour {
         }
     }
 
+    private int index;
+
+    private void Start()
+    {
+        _fsm = new FSM<Game_Join>(this);
+        _fsm.TransitionTo<P0>();
+    }
+
     void Update()
     {
-        _p1Show = _p1Connected;
-        _p2Show = _p2Connected;
+        //_p1Show = _p1Connected;
+        //_p2Show = _p2Connected;
 
         if (_bothConnected)
         {
-            Debug.Log("Both connected");
+            //Debug.Log("Both connected");
             if (ReInput.players.GetPlayer(0).GetButtonDown("Start") || ReInput.players.GetPlayer(1).GetButtonDown("Start"))
             {
                 SceneManager.LoadScene(1);
-                Debug.Log("Ready to play");
+                //Debug.Log("Ready to play");
             }
+        }
+
+        _fsm.Update();
+    }
+
+    private class State_Base : FSM<Game_Join>.State
+    {
+        protected float timer;
+
+        protected float cursorTimer;
+        protected bool cursorOn;
+
+        protected string stringHold;
+
+        protected float typeTime = .05f;
+
+        protected void Print (string s)
+        {
+            cursorTimer += Time.deltaTime;
+            if (cursorTimer >= .15f)
+            {
+                cursorTimer = 0;
+                cursorOn = !cursorOn;
+            }
+
+            ClampIndex();
+
+            if (cursorOn)
+                Context.field.text = s.Substring(0, Context.index) + "[]";
+            else
+                Context.field.text = s.Substring(0, Context.index);
+        }
+
+        protected void PrintOut ()
+        {
+            timer += Time.deltaTime;
+            if (timer >= typeTime)
+            {
+                timer -= typeTime;
+                Context.index++;
+
+                ClampIndex();
+                Print(stringHold);
+            }
+        }
+
+        protected void ClampIndex()
+        {
+            Context.index = Mathf.Clamp(Context.index, 0, stringHold.Length);
+        }
+    }
+
+    private class Clear : State_Base
+    {
+        public override void Init()
+        {
+            timer = 0;
+            stringHold = Context.field.text;
+            if (stringHold.Contains("[]"))
+            {
+                stringHold = stringHold.Substring(0, stringHold.Length - 2);
+                Debug.Log("Contained curson");
+            }
+        }
+
+        public override void Update()
+        {
+            timer += Time.deltaTime;
+            if (timer >= typeTime / 2)
+            {
+                timer -= typeTime / 2;
+                Context.index--;
+
+                Print(stringHold);
+
+                if (Context.index == 0)
+                {
+                    if (Context._bothConnected)
+                        TransitionTo<PBoth>();
+                    else if (Context._p1Connected)
+                        TransitionTo<P1>();
+                    else if (Context._p2Connected)
+                        TransitionTo<P2>();
+                    else
+                        TransitionTo<P0>();
+                }
+            }
+        }
+    }
+
+    private class P0 : State_Base
+    {
+        public override void Init()
+        {
+            timer = 0;
+            stringHold = Context.connected0;
+        }
+
+        public override void Update()
+        {
+            PrintOut();
+
+            if (Context._p1Connected || Context._p2Connected || Context._bothConnected)
+                TransitionTo<Clear>();
+        }
+    }
+
+    private class P1 : State_Base
+    {
+        public override void Init()
+        {
+            timer = 0;
+            stringHold = Context.connected1;
+        }
+
+        public override void Update()
+        {
+            PrintOut();
+
+            if (!Context._p1Connected || Context._p2Connected || Context._bothConnected)
+                TransitionTo<Clear>();
+        }
+    }
+
+    private class P2 : State_Base
+    {
+        public override void Init()
+        {
+            timer = 0;
+            stringHold = Context.connected2;
+        }
+
+        public override void Update()
+        {
+            PrintOut();
+            if (Context._p1Connected || !Context._p2Connected || Context._bothConnected)
+                TransitionTo<Clear>();
+        }
+    }
+
+    private class PBoth : State_Base
+    {
+        public override void Init()
+        {
+            timer = 0;
+            stringHold = Context.connectedBoth;
+        }
+
+        public override void Update()
+        {
+            PrintOut();
+            if (!Context._bothConnected)
+                TransitionTo<Clear>();
         }
     }
 }
