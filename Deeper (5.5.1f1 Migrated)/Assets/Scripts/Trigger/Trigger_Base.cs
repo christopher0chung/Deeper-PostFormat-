@@ -12,10 +12,12 @@ public class Trigger_Base : Deeper_Component {
 	}
 
     public Rigidbody[] rbOfInterest;
+    public List<bool> rbPresent;
+
     public float timeInTrigger;
 
     private float timer;
-    private int _numPresent;
+    //private int _numPresent;
 
     private InteractionEffects_Base _myIEB;
 
@@ -23,60 +25,83 @@ public class Trigger_Base : Deeper_Component {
 
     private void Start()
     {
-        _numPresent = 0;
+        //_numPresent = 0;
         _myIEB = GetComponent<InteractionEffects_Base>();
-    }
-
-    private void _COICheckIn(Collider c)
-    {
-        for (int i = 0; i < rbOfInterest.Length; i++)
+        rbPresent = new List<bool>();
+        foreach (Rigidbody rb in rbOfInterest)
         {
-            if (c.attachedRigidbody == rbOfInterest[i])
-            {
-                _numPresent++;
-            }
+            rbPresent.Add(false);
         }
     }
 
-    private void _CheckedTimerToTrigger()
-    {
-        if (rbOfInterest.Length == _numPresent)
-            timer += Time.fixedDeltaTime;
-        else
-            timer = 0;
+    //private void _COICheckIn(Collider c)
+    //{
+    //    for (int i = 0; i < rbOfInterest.Length; i++)
+    //    {
+    //        if (c.attachedRigidbody == rbOfInterest[i])
+    //        {
+    //            _numPresent++;
+    //        }
+    //    }
+    //}
 
-        if (timer >= timeInTrigger)
-        {
-            _triggered = true;
-            _myIEB.OnInteractedSuccess();
-            this.enabled = false;
-        }
-    }
+    //private void _CheckedTimerToTrigger()
+    //{
+    //    if (rbOfInterest.Length == _numPresent)
+    //        timer += Time.fixedDeltaTime;
+    //    else
+    //        timer = 0;
 
-    private void _COIClear()
-    {
-        _numPresent = 0;
-    }
+    //    if (timer >= timeInTrigger)
+    //    {
+    //        _triggered = true;
+    //        _myIEB.OnInteractedSuccess();
+    //        this.enabled = false;
+    //    }
+    //}
 
-    public void OnTriggerStay(Collider other)
-    {
-        if (!_triggered)
-            _COICheckIn(other);
-    }
+    //private void _COIClear()
+    //{
+    //    _numPresent = 0;
+    //}
+
+    //public void OnTriggerStay(Collider other)
+    //{
+    //    if (!_triggered)
+    //        _COICheckIn(other);
+    //}
 
     public override void PhysUpdate()
     {
         //_CheckedTimerToTrigger();
         //_COIClear();
 
+        // assess who's inside
         for (int i = 0; i < rbOfInterest.Length; i++)
         {
             foreach(Collider c in GetComponentsInChildren<Collider>())
             {
                 if (c.bounds.Contains(rbOfInterest[i].transform.position))
-                    timer += Time.fixedDeltaTime;
+                {
+                    rbPresent[i] = true;
+                }
             }
         }
+        
+        // kick out of physUpdate if any not present
+        for (int i = 0; i < rbPresent.Count; i++)
+        {
+            if (rbPresent[i] == false)
+            {
+                for (int j = 0; j < rbPresent.Count; j++)
+                {
+                    rbPresent[j] = false;
+                }
+                return;
+            }
+        }
+
+        timer += Time.fixedDeltaTime;
 
         if (timer >= timeInTrigger)
         {

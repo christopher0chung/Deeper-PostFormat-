@@ -121,12 +121,21 @@ public class Controlled_Character : Deeper_Component, ICurrentable {
     private float _interactTimerRef;
 
     private Mech_SuitAirSystem _myMSAS;
+
+    private bool isOOC;
     #endregion
 
     #region Deeper_Component Functions
     private void Awake()
     {
         Initialize(3000);
+        Deeper_EventManager.instance.Register<Deeper_Event_ControlScheme>(OOCHandler);
+    }
+
+    public override void _Unsub()
+    {
+        base._Unsub();
+        Deeper_EventManager.instance.Unregister<Deeper_Event_ControlScheme>(OOCHandler);
     }
 
     private void Start()
@@ -291,6 +300,24 @@ public class Controlled_Character : Deeper_Component, ICurrentable {
                 myAnim.SetBool("Grounded", true);
                 myAnim.SetFloat("WalkSpeed", 1);
             }
+        }
+
+    }
+
+    private void OOCHandler (Deeper_Event e)
+    {
+        Deeper_Event_ControlScheme c = e as Deeper_Event_ControlScheme;
+        if (c != null)
+        {
+            if (c.cs == ControlStates.Doc_OOC && thisChar == CharactersEnum.Doc)
+                isOOC = true;
+            else if (thisChar == CharactersEnum.Doc)
+                isOOC = false;
+
+            if (c.cs == ControlStates.Ops_OOC && thisChar == CharactersEnum.Ops)
+                isOOC = true;
+            else if (thisChar == CharactersEnum.Ops)
+                isOOC = false;
         }
     }
 
@@ -471,7 +498,8 @@ public class Controlled_Character : Deeper_Component, ICurrentable {
         {
             base.OnEnter();
             Context._SetPhysMatStick();
-            ControlsSetOutside(Context.thisChar);
+            if (!Context.isOOC)
+                ControlsSetOutside(Context.thisChar);
         }
 
         public override void Update()
@@ -524,7 +552,8 @@ public class Controlled_Character : Deeper_Component, ICurrentable {
         {
             base.OnEnter();
             Context._SetPhysMatStick();
-            ControlsSetOutside(Context.thisChar);
+            if (!Context.isOOC)
+                ControlsSetOutside(Context.thisChar);
         }
 
         public override void Update()
@@ -567,7 +596,8 @@ public class Controlled_Character : Deeper_Component, ICurrentable {
         {
             base.OnEnter();
             holdPos = Context.transform.position;
-            ControlsSetInProgress(Context.thisChar);
+            if (!Context.isOOC)
+                ControlsSetInProgress(Context.thisChar);
         }
 
         public override void Update()

@@ -1051,7 +1051,8 @@ public class Task_SmokeMonster : Task
     GameObject[] l;
     GameObject[] h;
 
-    bool onOff;
+    bool lightOnOff;
+    bool smokeOnOff;
 
     public override void Init()
     {
@@ -1070,30 +1071,91 @@ public class Task_SmokeMonster : Task
 
         l = GameObject.FindGameObjectsWithTag("HallLight");
         h = GameObject.FindGameObjectsWithTag("Hall");
+
+        monster.transform.position = new Vector3(-38, -59, 66.2f);
+
+        if (playerOfConcern.gameObject.name == "Doc")
+            Deeper_EventManager.instance.Fire(new Deeper_Event_ControlScheme(ControlStates.Doc_OOC));
+        else
+            Deeper_EventManager.instance.Fire(new Deeper_Event_ControlScheme(ControlStates.Ops_OOC));
+
+        rollOver = 1;
     }
 
     private float timer;
+    private float rollOver;
+    private int flickCounter;
+
+    bool flyAway;
 
     public override void TaskDeeperNormUpdate()
     {
-        timer += Time.deltaTime;
-        if (timer > 1)
+        if (flyAway)
         {
-            timer = 0;
-            onOff = !onOff;
+            monster.transform.position += new Vector3(10, 10, 10) * Time.deltaTime;
+            if (Vector3.Distance(monster.transform.position, playerOfConcern.transform.position) > 100)
+                this.SetStatus(TaskStatus.Success);
+            return;
+        }
+
+
+        if (flickCounter >= 30)
+        {
+            monster.SetActive(true);
+            flickCounter++;
+            monster.transform.position = Vector3.MoveTowards(monster.transform.position, playerOfConcern.transform.position, 50 * Time.deltaTime);
+
+            if (Vector3.Distance(monster.transform.position, playerOfConcern.transform.position) < .01f)
+                flyAway = true;
+
+            return;
+        }
+
+
+        timer += Time.deltaTime;
+        if (timer > rollOver)
+        {
+            timer -= rollOver;
+            rollOver = Random.Range(0.1f, .6f);
+
+            lightOnOff = !lightOnOff;
+
+            if (lightOnOff)
+            {
+                flickCounter++;
+
+                int i = Random.Range(0, 2);
+                if (i == 0)
+                    smokeOnOff = true;
+                else
+                    smokeOnOff = false;
+                monster.SetActive(smokeOnOff);
+            }
+
+            monster.transform.position += Vector3.forward * -.25f;
+
+
             foreach (GameObject x in l)
             {
-                x.SetActive(onOff);
+                x.SetActive(lightOnOff);
             }
 
             foreach (GameObject x in h)
             {
-                if (onOff)
+                if (lightOnOff)
                     x.GetComponent<MeshRenderer>().material = onMat;
                 else
                     x.GetComponent<MeshRenderer>().material = offMat;
             }
         }
+    }
+
+    public override void CleanUp()
+    {
+        if (playerOfConcern.gameObject.name == "Ops")
+            Deeper_EventManager.instance.Fire(new Deeper_Event_ControlScheme(ControlStates.Ops_RTS));
+        else
+            Deeper_EventManager.instance.Fire(new Deeper_Event_ControlScheme(ControlStates.Doc_RTS));
     }
 }
 

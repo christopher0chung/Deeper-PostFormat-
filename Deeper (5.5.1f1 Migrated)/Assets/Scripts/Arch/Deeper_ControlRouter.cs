@@ -11,6 +11,9 @@ public class Deeper_ControlRouter : MonoBehaviour {
 
     #endregion
 
+    private ControlStates _currentDocState;
+    private ControlStates _currentOpsState;
+
     private void Awake()
     {
         Deeper_EventManager.instance.Register<Deeper_Event_ControlAssignment>(ControlAssignmentVotesHandler);
@@ -100,6 +103,9 @@ public class Deeper_ControlRouter : MonoBehaviour {
 
     private void SetControls (ControlStates cS)
     {
+
+        Debug.Log(cS.ToString());
+
         // If the game interrupts controls, then all maps will be disabled
         if (cS == ControlStates.Interrupted)
         {
@@ -127,6 +133,12 @@ public class Deeper_ControlRouter : MonoBehaviour {
             }
         }
 
+        else if (cS == ControlStates.RTS)
+        {
+            SetControls(_currentDocState);
+            SetControls(_currentOpsState);
+        }
+
         else
         {
             //Debug.Log(cS);
@@ -141,20 +153,26 @@ public class Deeper_ControlRouter : MonoBehaviour {
                 }
                 players[Deeper_ServicesLocator.instance.GetInt(CharactersEnum.Ops)].controllers.maps.SetMapsEnabled(true, Deeper_RewiredAid.instance.GetMap(ControlMaps.Default));
                 players[Deeper_ServicesLocator.instance.GetInt(CharactersEnum.Ops)].controllers.maps.SetMapsEnabled(true, Deeper_RewiredAid.instance.GetMap(ControlMaps.Sub));
+
+                _currentOpsState = ControlStates.Ops_Inside;
             }
 
             if (cS == ControlStates.Ops_Outside)
             {
+                Debug.Log("Ops is outside");
                 for (int j = 0; j <= 12; j++)
                 {
                     players[Deeper_ServicesLocator.instance.GetInt(CharactersEnum.Ops)].controllers.maps.SetMapsEnabled(false, j);
                 }
                 players[Deeper_ServicesLocator.instance.GetInt(CharactersEnum.Ops)].controllers.maps.SetMapsEnabled(true, Deeper_RewiredAid.instance.GetMap(ControlMaps.Default));
                 players[Deeper_ServicesLocator.instance.GetInt(CharactersEnum.Ops)].controllers.maps.SetMapsEnabled(true, Deeper_RewiredAid.instance.GetMap(ControlMaps.Character));
+
+                _currentOpsState = ControlStates.Ops_Outside;
             }
 
             if (cS == ControlStates.Ops_OOC)
             {
+                Debug.Log("Ops is ooc");
                 for (int j = 0; j <= 12; j++)
                 {
                     players[Deeper_ServicesLocator.instance.GetInt(CharactersEnum.Ops)].controllers.maps.SetMapsEnabled(false, j);
@@ -170,6 +188,11 @@ public class Deeper_ControlRouter : MonoBehaviour {
                 players[Deeper_ServicesLocator.instance.GetInt(CharactersEnum.Ops)].controllers.maps.SetMapsEnabled(true, Deeper_RewiredAid.instance.GetMap(ControlMaps.Default));
             }
 
+            if (cS == ControlStates.Ops_RTS)
+            {
+                SetControls(_currentOpsState);
+            }
+
             #endregion
 
             #region Doc
@@ -182,6 +205,8 @@ public class Deeper_ControlRouter : MonoBehaviour {
                 }
                 players[Deeper_ServicesLocator.instance.GetInt(CharactersEnum.Doc)].controllers.maps.SetMapsEnabled(true, Deeper_RewiredAid.instance.GetMap(ControlMaps.Default));
                 players[Deeper_ServicesLocator.instance.GetInt(CharactersEnum.Doc)].controllers.maps.SetMapsEnabled(true, Deeper_RewiredAid.instance.GetMap(ControlMaps.Sub));
+
+                _currentDocState = ControlStates.Doc_Inside;
             }
 
             if (cS == ControlStates.Doc_Outside)
@@ -192,6 +217,8 @@ public class Deeper_ControlRouter : MonoBehaviour {
                 }
                 players[Deeper_ServicesLocator.instance.GetInt(CharactersEnum.Doc)].controllers.maps.SetMapsEnabled(true, Deeper_RewiredAid.instance.GetMap(ControlMaps.Default));
                 players[Deeper_ServicesLocator.instance.GetInt(CharactersEnum.Doc)].controllers.maps.SetMapsEnabled(true, Deeper_RewiredAid.instance.GetMap(ControlMaps.Character));
+
+                _currentDocState = ControlStates.Doc_Outside;
             }
 
             if (cS == ControlStates.Doc_OOC)
@@ -211,9 +238,14 @@ public class Deeper_ControlRouter : MonoBehaviour {
                 players[Deeper_ServicesLocator.instance.GetInt(CharactersEnum.Doc)].controllers.maps.SetMapsEnabled(true, Deeper_RewiredAid.instance.GetMap(ControlMaps.Default));
             }
 
+            if (cS == ControlStates.Doc_RTS)
+            {
+                SetControls(_currentDocState);
+            }
+
             #endregion
         }
     }
 }
 public enum ControlOrientation { c0Doc_c1Ops, c0Ops_c1Doc }
-public enum ControlStates { Interrupted, Ops_Outside, Ops_Inside, Ops_OOC, Ops_IP, Doc_Outside, Doc_Inside, Doc_OOC, Doc_IP, Menu}
+public enum ControlStates { Interrupted, Ops_Outside, Ops_Inside, Ops_OOC, Ops_IP, Doc_Outside, Doc_Inside, Doc_OOC, Doc_IP, Menu, RTS, Ops_RTS, Doc_RTS}
