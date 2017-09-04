@@ -45,7 +45,7 @@ public class Controlled_Sub : Deeper_Component, ICurrentable {
     private Particle_Controller _PSCAft;
 
 
-    #region Deeper_Component Functions
+#region Deeper_Component Functions
     private void Awake()
     {
         Initialize(3000);

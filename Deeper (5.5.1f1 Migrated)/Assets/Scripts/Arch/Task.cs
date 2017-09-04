@@ -1086,24 +1086,30 @@ public class Task_SmokeMonster : Task
     private float rollOver;
     private int flickCounter;
 
+    private float flyAwayTimer;
     bool flyAway;
 
     public override void TaskDeeperNormUpdate()
     {
         if (flyAway)
         {
-            monster.transform.position += new Vector3(10, 10, 10) * Time.deltaTime;
-            if (Vector3.Distance(monster.transform.position, playerOfConcern.transform.position) > 100)
-                this.SetStatus(TaskStatus.Success);
-            return;
+            flyAwayTimer += Time.deltaTime;
+
+            if (flyAwayTimer >= 1.3f)
+            {
+                monster.transform.position += new Vector3(10, 10, 10) * Time.deltaTime;
+                if (Vector3.Distance(monster.transform.position, playerOfConcern.transform.position) > 100)
+                    this.SetStatus(TaskStatus.Success);
+                return;
+            }
         }
 
 
-        if (flickCounter >= 30)
+        if (flickCounter >= 15)
         {
             monster.SetActive(true);
             flickCounter++;
-            monster.transform.position = Vector3.MoveTowards(monster.transform.position, playerOfConcern.transform.position, 50 * Time.deltaTime);
+            monster.transform.position = Vector3.MoveTowards(monster.transform.position, playerOfConcern.transform.position, 30 * Time.deltaTime);
 
             if (Vector3.Distance(monster.transform.position, playerOfConcern.transform.position) < .01f)
                 flyAway = true;
@@ -1124,12 +1130,16 @@ public class Task_SmokeMonster : Task
             {
                 flickCounter++;
 
-                int i = Random.Range(0, 2);
-                if (i == 0)
+                int i = Random.Range(0, 4);
+                if (i != 0)
                     smokeOnOff = true;
                 else
                     smokeOnOff = false;
                 monster.SetActive(smokeOnOff);
+            }
+            else
+            {
+                monster.SetActive(false);
             }
 
             monster.transform.position += Vector3.forward * -.25f;

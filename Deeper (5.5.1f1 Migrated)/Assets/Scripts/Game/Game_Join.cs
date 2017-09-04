@@ -31,26 +31,26 @@ public class Game_Join : MonoBehaviour {
         }
     }
 
-    private GameObject _cube1;
-    private bool _p1S;
-    private bool _p1Show
-    {
-        get
-        {
-            return _p1S;
-        }
-        set
-        {
-            if (value != _p1S)
-            {
-                _p1S = value;
-                if (_p1S)
-                    _cube1 = Instantiate(cube, new Vector3(-5, 0, 0), Quaternion.identity);
-                else
-                    Destroy(_cube1);
-            }
-        }
-    }
+    //private GameObject _cube1;
+    //private bool _p1S;
+    //private bool _p1Show
+    //{
+    //    get
+    //    {
+    //        return _p1S;
+    //    }
+    //    set
+    //    {
+    //        if (value != _p1S)
+    //        {
+    //            _p1S = value;
+    //            if (_p1S)
+    //                _cube1 = Instantiate(cube, new Vector3(-5, 0, 0), Quaternion.identity);
+    //            else
+    //                Destroy(_cube1);
+    //        }
+    //    }
+    //}
 
     private bool _p2Connected
     {
@@ -64,26 +64,26 @@ public class Game_Join : MonoBehaviour {
         }
     }
 
-    private GameObject _cube2;
-    private bool _p2S;
-    private bool _p2Show
-    {
-        get
-        {
-            return _p2S;
-        }
-        set
-        {
-            if (value != _p2S)
-            {
-                _p2S = value;
-                if (_p2S)
-                    _cube2 = Instantiate(cube, new Vector3(5, 0, 0), Quaternion.identity);
-                else
-                    Destroy(_cube2);
-            }
-        }
-    }
+    //private GameObject _cube2;
+    //private bool _p2S;
+    //private bool _p2Show
+    //{
+    //    get
+    //    {
+    //        return _p2S;
+    //    }
+    //    set
+    //    {
+    //        if (value != _p2S)
+    //        {
+    //            _p2S = value;
+    //            if (_p2S)
+    //                _cube2 = Instantiate(cube, new Vector3(5, 0, 0), Quaternion.identity);
+    //            else
+    //                Destroy(_cube2);
+    //        }
+    //    }
+    //}
 
     private bool _bothConnected
     {

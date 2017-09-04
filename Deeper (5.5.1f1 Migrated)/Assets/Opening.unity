@@ -37,7 +37,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.16788375, g: 0.21073635, b: 0.28994125, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -606,7 +606,7 @@ MonoBehaviour:
   FogTransitionSize: 5
   MaxLightDistance: 128
   AboveFogPercent: 0.1
-  Offset: {x: 319.69757, y: 319.69757, z: 0}
+  Offset: {x: 397.15082, y: 397.15082, z: 0}
 --- !u!108 &404192668
 Light:
   m_ObjectHideFlags: 0
@@ -617,7 +617,7 @@ Light:
   serializedVersion: 7
   m_Type: 2
   m_Color: {r: 1, g: 0.5661765, b: 0.5661765, a: 1}
-  m_Intensity: 2
+  m_Intensity: 1
   m_Range: 20
   m_SpotAngle: 30
   m_CookieSize: 10
@@ -832,7 +832,7 @@ MeshRenderer:
   - {fileID: 2100000, guid: 88d1fcd1dd51c204eb441d61bb56793a, type: 2}
   - {fileID: 2100000, guid: baf4965d81f0e0f419be84b47db7878e, type: 2}
   - {fileID: 2100000, guid: 147909cc37352a5428bf7ff8d6146baa, type: 2}
-  - {fileID: 2100000, guid: 7d9bcf7a21f64cc459b5022f324f4e96, type: 2}
+  - {fileID: 2100000, guid: 8c02af687ac97dd47b59698da646a474, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1156,7 +1156,7 @@ ParticleSystem:
       maxColor: {r: 1, g: 1, b: 1, a: 1}
       minMaxState: 0
     startSize:
-      scalar: 10
+      scalar: 5
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -1174,7 +1174,7 @@ ParticleSystem:
         m_Curve:
         - serializedVersion: 2
           time: 0
-          value: 0.5
+          value: 0.4
           inSlope: 0
           outSlope: 0
           tangentMode: 0
@@ -1387,7 +1387,7 @@ ParticleSystem:
     enabled: 1
     serializedVersion: 3
     rateOverTime:
-      scalar: 100
+      scalar: 50
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -8557,7 +8557,7 @@ MonoBehaviour:
   FogTransitionSize: 5
   MaxLightDistance: 128
   AboveFogPercent: 0.1
-  Offset: {x: 319.69757, y: 319.69757, z: 0}
+  Offset: {x: 397.15082, y: 397.15082, z: 0}
 --- !u!108 &1370010200
 Light:
   m_ObjectHideFlags: 0
@@ -8568,7 +8568,7 @@ Light:
   serializedVersion: 7
   m_Type: 2
   m_Color: {r: 1, g: 0.5661765, b: 0.5661765, a: 1}
-  m_Intensity: 2
+  m_Intensity: 1
   m_Range: 20
   m_SpotAngle: 30
   m_CookieSize: 10
@@ -8787,7 +8787,7 @@ MonoBehaviour:
   FogTransitionSize: 5
   MaxLightDistance: 128
   AboveFogPercent: 0.1
-  Offset: {x: 26091.035, y: 26091.035, z: 0}
+  Offset: {x: 26168.281, y: 26168.281, z: 0}
 --- !u!108 &1391459416
 Light:
   m_ObjectHideFlags: 0
@@ -11686,10 +11686,10 @@ MonoBehaviour:
   MapToLDR: 0
   RemoveColorBanding: 1
   MatrixVP:
-    e00: 0.56183743
+    e00: 0.56226414
     e01: 0
     e02: 0
-    e03: 0.00000053580993
+    e03: 0.0000005362169
     e10: -0
     e11: -1
     e12: 0
@@ -11703,10 +11703,10 @@ MonoBehaviour:
     e32: 1
     e33: -33.18
   LastMatrixVP:
-    e00: 0.56183743
+    e00: 0.56226414
     e01: 0
     e02: 0
-    e03: 0.00000053580993
+    e03: 0.0000005362169
     e10: 0
     e11: 1
     e12: 0
@@ -12138,7 +12138,7 @@ MonoBehaviour:
   FogTransitionSize: 5
   MaxLightDistance: 128
   AboveFogPercent: 0.1
-  Offset: {x: 26090.684, y: 26090.684, z: 0}
+  Offset: {x: 26167.93, y: 26167.93, z: 0}
 --- !u!108 &1774247009
 Light:
   m_ObjectHideFlags: 0
