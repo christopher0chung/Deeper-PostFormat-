@@ -96,6 +96,18 @@ public class Controlled_Character : Deeper_Component, ICurrentable {
         }
     }
 
+    private bool _subTurning;
+    private bool _canEgress
+    {
+        get
+        {
+            if (!_subTurning)
+                return true;
+            else
+                return false;
+        }
+    }
+
     private FSM<Controlled_Character> _fsm;
 
     private Vector3 _leftStickInput;
@@ -130,6 +142,7 @@ public class Controlled_Character : Deeper_Component, ICurrentable {
     {
         Initialize(3000);
         Deeper_EventManager.instance.Register<Deeper_Event_ControlScheme>(OOCHandler);
+        Deeper_EventManager.instance.Register<Deeper_Event_SubTurning>(SubStateHandler);
     }
 
     public override void _Unsub()
@@ -318,6 +331,18 @@ public class Controlled_Character : Deeper_Component, ICurrentable {
                 isOOC = true;
             else if (thisChar == CharactersEnum.Ops)
                 isOOC = false;
+        }
+    }
+
+    private void SubStateHandler (Deeper_Event e)
+    {
+        Deeper_Event_SubTurning s = e as Deeper_Event_SubTurning;
+        if (s != null)
+        {
+            if (s.isTurning)
+                _subTurning = true;
+            else
+                _subTurning = false;
         }
     }
 
@@ -632,7 +657,7 @@ public class Controlled_Character : Deeper_Component, ICurrentable {
 
             Context._myMSAS.Recharge();
 
-            if (ReInput.players.GetPlayer(Context.controllerNum).GetButtonDown("Sub Egress"))
+            if (ReInput.players.GetPlayer(Context.controllerNum).GetButtonDown("Sub Egress") && Context._canEgress)
             {
                 TransitionTo<Egressing>();
             }

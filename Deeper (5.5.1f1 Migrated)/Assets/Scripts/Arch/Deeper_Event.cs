@@ -110,3 +110,17 @@ public class Deeper_Event_Death : Deeper_Event
         dT = typeOfDeath;
     }
 }
+
+//--------------------------------------------
+// Ship Handling and Status
+//--------------------------------------------
+
+public class Deeper_Event_SubTurning : Deeper_Event
+{
+    public bool isTurning;
+
+    public Deeper_Event_SubTurning (bool isTheSubTurning)
+    {
+        isTurning = isTheSubTurning;
+    }
+}

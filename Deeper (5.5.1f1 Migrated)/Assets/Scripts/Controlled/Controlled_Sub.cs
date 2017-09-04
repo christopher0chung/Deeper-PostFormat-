@@ -14,8 +14,14 @@ public class Controlled_Sub : Deeper_Component, ICurrentable {
     public float buoyancyForceScalar;
     public float turnNormalizedTime;
 
+    public float lightWheelAngSpeed;
+
     public bool canDrive;
 
+    public GameObject prop;
+    public Transform lightWheel;
+
+    #region Private Variables
     private Rigidbody _rigidbody;
 
     private Vector3 _p0MoveVector;
@@ -28,6 +34,7 @@ public class Controlled_Sub : Deeper_Component, ICurrentable {
     // 3 - p1 UD Input
     private float _attitudeAngTarget;
     [HideInInspector] public float _attitudeAngActual;
+    [HideInInspector] public float _headingAngActual;
 
     private float _deltaBuoyancyForce;
     private float _deltaBuoyancyForceApplied;
@@ -35,17 +42,15 @@ public class Controlled_Sub : Deeper_Component, ICurrentable {
     private Vector3 totalForce;
     private float angClamp = 25;
 
-    //public GameObject propPort;
-    //public GameObject propStbd;
-    //private Particle_Controller _portPS;
-    //private Particle_Controller _stbdPS;
-
-    public GameObject prop;
     private Particle_Controller _PSCFwd;
     private Particle_Controller _PSCAft;
 
+    private float _lightWheelAng;
+    private float _lightFloatUpDownP1;
+    private float _lightFloatUpDownP2;
+    #endregion
 
-#region Deeper_Component Functions
+    #region Deeper_Component Functions
     private void Awake()
     {
         Initialize(3000);
@@ -58,8 +63,6 @@ public class Controlled_Sub : Deeper_Component, ICurrentable {
 
         _rigidbody = GetComponent<Rigidbody>();
 
-        //_portPS = propPort.GetComponentInChildren<Particle_Controller>();
-        //_stbdPS = propStbd.GetComponentInChildren<Particle_Controller>();
         _PSCFwd = prop.transform.Find("Fwd").GetComponent<Particle_Controller>();
         _PSCAft = prop.transform.Find("Aft").GetComponent<Particle_Controller>();
     }
@@ -75,6 +78,8 @@ public class Controlled_Sub : Deeper_Component, ICurrentable {
 
         _PropAnim();
 
+        //if (Input.GetKeyDown(KeyCode.Space))
+        //    _fsm.TransitionTo<TurnToLeft>();
     }
 
     public override void PhysUpdate()
@@ -85,7 +90,7 @@ public class Controlled_Sub : Deeper_Component, ICurrentable {
         _VelocityCompBuoyancy();
 
         if (canDrive)
-            _rigidbody.AddForce(Quaternion.Euler(0, 0, _attitudeAngActual) * Vector3.right * _linearThrust + _deltaBuoyancyForceApplied * Vector3.up);
+            _rigidbody.AddForce(Quaternion.Euler(0, _headingAngActual, _attitudeAngActual) * Vector3.right * _linearThrust + _deltaBuoyancyForceApplied * Vector3.up);
 
         _rigidbody.AddForce(_currentForce);
         //Debug.Log(_currentForce);
@@ -111,36 +116,20 @@ public class Controlled_Sub : Deeper_Component, ICurrentable {
         _spinRate = Mathf.Lerp(_spinRate, _linearThrust, .05f);
         _rotAng.z -= _spinRate / 20;
         _rotAng.z = (_rotAng.z + 360) % 360;
-        //propPort.transform.localRotation = (Quaternion.Euler(_rotAng));
-        //propStbd.transform.localRotation = (Quaternion.Euler(_rotAng));
         prop.transform.localRotation = Quaternion.Euler(_rotAng);
 
         if (_spinRate > 100)
         {
-            //_portPS.transform.localRotation = Quaternion.Euler(0, 180, 0);
-            //_portPS.OnOff(true);
-            //_stbdPS.transform.localRotation = Quaternion.Euler(0, 180, 0);
-            //_stbdPS.OnOff(true);
-            //_PSCFwd.transform.localRotation = Quaternion.Euler(0, 90, 0);
-
             _PSCFwd.OnOff(true);
             _PSCAft.OnOff(false);
         }
         else if (_spinRate < -100)
         {
-            //_portPS.transform.localRotation = Quaternion.Euler(0, 0, 0);
-            //_portPS.OnOff(true);
-            //_stbdPS.transform.localRotation = Quaternion.Euler(0, 0, 0);
-            //_stbdPS.OnOff(true);
-            //_PSCFwd.transform.localRotation = Quaternion.Euler(0, 270, 0);
-
             _PSCFwd.OnOff(false);
             _PSCAft.OnOff(true);
         }
         else
         {
-            //_portPS.OnOff(false);
-            //_stbdPS.OnOff(false);
             _PSCFwd.OnOff(false);
             _PSCAft.OnOff(false);
         }
@@ -155,6 +144,9 @@ public class Controlled_Sub : Deeper_Component, ICurrentable {
         _maneuveringFloats[1] = ReInput.players.GetPlayer(1).GetAxis("Sub Horizontal");
         _maneuveringFloats[2] = ReInput.players.GetPlayer(0).GetAxis("Sub Vertical");
         _maneuveringFloats[3] = ReInput.players.GetPlayer(1).GetAxis("Sub Vertical");
+
+        _lightFloatUpDownP1 = ReInput.players.GetPlayer(0).GetAxis("Sub Light Vertical");
+        _lightFloatUpDownP2 = ReInput.players.GetPlayer(1).GetAxis("Sub Light Vertical");
     }
 
     private void _ApplyClamps()
@@ -192,15 +184,65 @@ public class Controlled_Sub : Deeper_Component, ICurrentable {
             base.OnEnter();
             Debug.Log("In " + this.GetType().Name);
         }
+
+        protected float p1backuptimer;
+        protected float p2backupTimer;
+
+        protected void TestToTurn (bool trueLessThanFalseGreatherThan, float stickValLRThreshold, float howLongTillTrigger)
+        {
+            if (trueLessThanFalseGreatherThan)
+            {
+                if (Context._maneuveringFloats[0] < stickValLRThreshold)
+                    p1backuptimer += Time.deltaTime;
+                else
+                    p1backuptimer = 0;
+
+                if (Context._maneuveringFloats[1] < stickValLRThreshold)
+                    p2backupTimer += Time.deltaTime;
+                else
+                    p2backupTimer = 0;
+            }
+            else
+            {
+                if (Context._maneuveringFloats[0] > stickValLRThreshold)
+                    p1backuptimer += Time.deltaTime;
+                else
+                    p1backuptimer = 0;
+
+                if (Context._maneuveringFloats[1] > stickValLRThreshold)
+                    p2backupTimer += Time.deltaTime;
+                else
+                    p2backupTimer = 0;
+            }
+
+            if (p1backuptimer >= howLongTillTrigger || p2backupTimer >= howLongTillTrigger)
+            {
+                if (trueLessThanFalseGreatherThan)
+                {
+                    TransitionTo<TurnToLeft>();
+                }
+                else
+                {
+                    TransitionTo<TurnToRight>();
+                }
+            }
+        }
+
+        protected void ChangeLightAng()
+        {
+            Context._lightWheelAng += (Context._lightFloatUpDownP1 + Context._lightFloatUpDownP2) * -Context.lightWheelAngSpeed * Time.deltaTime;
+            Context._lightWheelAng = Mathf.Clamp(Context._lightWheelAng, -60f, 110f);
+            Context.lightWheel.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, Context._lightWheelAng));
+        }
     }
 
     private class FacingRight : State_Base
     {
-        private float backupTimer;
         public override void OnEnter()
         {
             base.OnEnter();
             Context._deltaBuoyancyForce = 0;
+            p1backuptimer = p2backupTimer = 0;
         }       
         public override void Update()
         {
@@ -211,37 +253,32 @@ public class Controlled_Sub : Deeper_Component, ICurrentable {
 
             if ((Mathf.Abs(Context._maneuveringFloats[2]) >.7f || Mathf.Abs(Context._maneuveringFloats[3]) >.7f) && Mathf.Abs(Context._attitudeAngActual) > Context.angClamp - 1)
                 Context._deltaBuoyancyForce += (Context._maneuveringFloats[2] + Context._maneuveringFloats[3]) * Context.buoyancyForceScalar;
+
+            TestToTurn(true, -.7f, 5f);
+            ChangeLightAng();
         }
     }
 
     private class FacingLeft : State_Base
     {
-        private float backupTimer;
         public override void OnEnter()
         {
             base.OnEnter();
             Context._deltaBuoyancyForce = 0;
+            p1backuptimer = p2backupTimer = 0;
         }
         public override void Update()
         {
-            Context._linearThrust = -(Context._maneuveringFloats[0] + Context._maneuveringFloats[1]);
+            Context._linearThrust = Context.moveForceScalar * -(Context._maneuveringFloats[0] + Context._maneuveringFloats[1]);
 
-            Context._attitudeAngTarget -=  Context.attitudeSpeedScalar * (Context._maneuveringFloats[2] + Context._maneuveringFloats[3]);
+            if (Mathf.Abs(Context._maneuveringFloats[2]) > .15f || Mathf.Abs(Context._maneuveringFloats[3]) > .15f)
+                Context._attitudeAngTarget += Context.attitudeSpeedScalar * (Context._maneuveringFloats[2] + Context._maneuveringFloats[3]);
 
-            Context._deltaBuoyancyForce += (Context._maneuveringFloats[2] + Context._maneuveringFloats[3]);
+            if ((Mathf.Abs(Context._maneuveringFloats[2]) > .7f || Mathf.Abs(Context._maneuveringFloats[3]) > .7f) && Mathf.Abs(Context._attitudeAngActual) > Context.angClamp - 1)
+                Context._deltaBuoyancyForce += (Context._maneuveringFloats[2] + Context._maneuveringFloats[3]) * Context.buoyancyForceScalar;
 
-            if (Context._maneuveringFloats[0] > -.5f || Context._maneuveringFloats[1] > -.5f)
-                backupTimer += Time.deltaTime;
-            if (Context._maneuveringFloats[0] > .75f || Context._maneuveringFloats[1] > .75f)
-                backupTimer = 0;
-
-            if (backupTimer >= 3)
-                TransitionTo<TurnToRight>();
-
-            //Debug.Log(backupTimer);
-
-            backupTimer -= .2f * Time.deltaTime;
-            backupTimer = Mathf.Clamp(backupTimer, 0, 4);
+            TestToTurn(false, .7f, 5f);
+            ChangeLightAng();
         }
     }
 
@@ -252,13 +289,26 @@ public class Controlled_Sub : Deeper_Component, ICurrentable {
         {
             base.OnEnter();
             turnTimer = 0;
+            Deeper_EventManager.instance.Fire(new Deeper_Event_SubTurning(true));
         }
+
         public override void Update()
         {
             turnTimer += Time.deltaTime / Context.turnNormalizedTime;
 
-            if (turnTimer >= 2)
+            Context._headingAngActual = Mathf.Lerp(180f, 360f, Deeper_ServicesLocator.SineEaseInOut(turnTimer));
+
+            ChangeLightAng();
+
+            if (turnTimer >= 1)
                 TransitionTo<FacingRight>();
+        }
+
+        public override void OnExit()
+        {
+            base.OnExit();
+            Context._headingAngActual = 0;
+            Deeper_EventManager.instance.Fire(new Deeper_Event_SubTurning(false));
         }
     }
 
@@ -269,13 +319,25 @@ public class Controlled_Sub : Deeper_Component, ICurrentable {
         {
             base.OnEnter();
             turnTimer = 0;
+            Deeper_EventManager.instance.Fire(new Deeper_Event_SubTurning(true));
         }
+
         public override void Update()
         {
             turnTimer += Time.deltaTime / Context.turnNormalizedTime;
 
-            if (turnTimer >= 2)
+            Context._headingAngActual = Mathf.Lerp(0f, 180f, Deeper_ServicesLocator.SineEaseInOut(turnTimer));
+
+            ChangeLightAng();
+
+            if (turnTimer >= 1)
                 TransitionTo<FacingLeft>();
+        }
+
+        public override void OnExit()
+        {
+            base.OnExit();
+            Deeper_EventManager.instance.Fire(new Deeper_Event_SubTurning(false));
         }
     }
 
