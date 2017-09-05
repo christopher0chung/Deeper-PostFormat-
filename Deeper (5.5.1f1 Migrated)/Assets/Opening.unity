@@ -308,16 +308,16 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: Standing By... []
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: aae153a8cfb337748a485325b9687a88, type: 2}
-  m_sharedMaterial: {fileID: 21333204135020644, guid: aae153a8cfb337748a485325b9687a88,
+  m_fontAsset: {fileID: 11400000, guid: 0f220383122b5f344aa649cd65718ae7, type: 2}
+  m_sharedMaterial: {fileID: 21309088738197786, guid: 0f220383122b5f344aa649cd65718ae7,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4284601666
-  m_fontColor: {r: 0.25886676, g: 0.83823526, b: 0.38273185, a: 1}
+    rgba: 1303182185
+  m_fontColor: {r: 0.41295412, g: 0.9852941, b: 0.6774146, a: 0.303}
   m_enableVertexGradient: 0
   m_fontColorGradient:
     topLeft: {r: 1, g: 1, b: 1, a: 1}
@@ -334,8 +334,8 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 1.23
-  m_fontSizeBase: 1.23
+  m_fontSize: 1.37
+  m_fontSizeBase: 1.37
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -343,7 +343,7 @@ MonoBehaviour:
   m_fontStyle: 0
   m_textAlignment: 257
   m_isAlignmentEnumConverted: 1
-  m_characterSpacing: -17.43
+  m_characterSpacing: -3.06
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -419,7 +419,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 21333204135020644, guid: aae153a8cfb337748a485325b9687a88, type: 2}
+  - {fileID: 21309088738197786, guid: 0f220383122b5f344aa649cd65718ae7, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -606,7 +606,7 @@ MonoBehaviour:
   FogTransitionSize: 5
   MaxLightDistance: 128
   AboveFogPercent: 0.1
-  Offset: {x: 397.15082, y: 397.15082, z: 0}
+  Offset: {x: 461.67407, y: 461.67407, z: 0}
 --- !u!108 &404192668
 Light:
   m_ObjectHideFlags: 0
@@ -8557,7 +8557,7 @@ MonoBehaviour:
   FogTransitionSize: 5
   MaxLightDistance: 128
   AboveFogPercent: 0.1
-  Offset: {x: 397.15082, y: 397.15082, z: 0}
+  Offset: {x: 461.67407, y: 461.67407, z: 0}
 --- !u!108 &1370010200
 Light:
   m_ObjectHideFlags: 0
@@ -8787,7 +8787,7 @@ MonoBehaviour:
   FogTransitionSize: 5
   MaxLightDistance: 128
   AboveFogPercent: 0.1
-  Offset: {x: 26168.281, y: 26168.281, z: 0}
+  Offset: {x: 26232.807, y: 26232.807, z: 0}
 --- !u!108 &1391459416
 Light:
   m_ObjectHideFlags: 0
@@ -11686,10 +11686,10 @@ MonoBehaviour:
   MapToLDR: 0
   RemoveColorBanding: 1
   MatrixVP:
-    e00: 0.56226414
+    e00: 0.5626102
     e01: 0
     e02: 0
-    e03: 0.0000005362169
+    e03: 0.0000005365469
     e10: -0
     e11: -1
     e12: 0
@@ -11703,10 +11703,10 @@ MonoBehaviour:
     e32: 1
     e33: -33.18
   LastMatrixVP:
-    e00: 0.56226414
+    e00: 0.5626102
     e01: 0
     e02: 0
-    e03: 0.0000005362169
+    e03: 0.0000005365469
     e10: 0
     e11: 1
     e12: 0
@@ -12138,7 +12138,7 @@ MonoBehaviour:
   FogTransitionSize: 5
   MaxLightDistance: 128
   AboveFogPercent: 0.1
-  Offset: {x: 26167.93, y: 26167.93, z: 0}
+  Offset: {x: 26232.455, y: 26232.455, z: 0}
 --- !u!108 &1774247009
 Light:
   m_ObjectHideFlags: 0
@@ -12484,8 +12484,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 848822192
-  m_fontColor: {r: 0.69320464, g: 1, b: 0.5955882, a: 0.197}
+    rgba: 1321992112
+  m_fontColor: {r: 0.6901961, g: 1, b: 0.79607844, a: 0.309}
   m_enableVertexGradient: 0
   m_fontColorGradient:
     topLeft: {r: 1, g: 1, b: 1, a: 1}

@@ -27,7 +27,7 @@ public class Controlled_Sub : Deeper_Component, ICurrentable {
     private Vector3 _p0MoveVector;
     private Vector3 _p1MoveVector;
 
-    private float[] _maneuveringFloats = new float[4];
+    public float[] _maneuveringFloats = new float[4];
     // 0 - p0 LR Thrust
     // 1 - p1 LR Thrust
     // 2 - p0 UD Input
@@ -37,7 +37,7 @@ public class Controlled_Sub : Deeper_Component, ICurrentable {
     [HideInInspector] public float _headingAngActual;
 
     private float _deltaBuoyancyForce;
-    private float _deltaBuoyancyForceApplied;
+    [HideInInspector] public float _deltaBuoyancyForceApplied { get; private set; }
     private float _linearThrust;
     private Vector3 totalForce;
     private float angClamp = 25;
