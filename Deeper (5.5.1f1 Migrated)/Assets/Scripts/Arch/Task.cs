@@ -1089,6 +1089,8 @@ public class Task_SmokeMonster : Task
     private float flyAwayTimer;
     bool flyAway;
 
+    bool appliedNarcYet;
+
     public override void TaskDeeperNormUpdate()
     {
         if (flyAway)
@@ -1097,6 +1099,15 @@ public class Task_SmokeMonster : Task
 
             if (flyAwayTimer >= 1.3f)
             {
+                if (!appliedNarcYet)
+                {
+                    appliedNarcYet = true;
+                    if (playerOfConcern.gameObject.name == "Doc")
+                        Deeper_EventManager.instance.Fire(new Deeper_Event_Narc(CharactersEnum.Doc));
+                    else
+                        Deeper_EventManager.instance.Fire(new Deeper_Event_Narc(CharactersEnum.Ops));
+                }
+
                 monster.transform.position += new Vector3(10, 10, 10) * Time.deltaTime;
                 if (Vector3.Distance(monster.transform.position, playerOfConcern.transform.position) > 100)
                     this.SetStatus(TaskStatus.Success);

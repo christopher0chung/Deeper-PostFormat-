@@ -124,3 +124,17 @@ public class Deeper_Event_SubTurning : Deeper_Event
         isTurning = isTheSubTurning;
     }
 }
+
+//--------------------------------------------
+// Narc
+//--------------------------------------------
+
+public class Deeper_Event_Narc : Deeper_Event
+{
+    public CharactersEnum whoIsNarced;
+
+    public Deeper_Event_Narc(CharactersEnum who)
+    {
+        whoIsNarced = who;
+    }
+}

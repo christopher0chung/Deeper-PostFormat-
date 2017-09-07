@@ -143,12 +143,15 @@ public class Controlled_Character : Deeper_Component, ICurrentable {
         Initialize(3000);
         Deeper_EventManager.instance.Register<Deeper_Event_ControlScheme>(OOCHandler);
         Deeper_EventManager.instance.Register<Deeper_Event_SubTurning>(SubStateHandler);
+        Deeper_EventManager.instance.Register<Deeper_Event_Narc>(NarcHandler);
     }
 
     public override void _Unsub()
     {
         base._Unsub();
         Deeper_EventManager.instance.Unregister<Deeper_Event_ControlScheme>(OOCHandler);
+        Deeper_EventManager.instance.Unregister<Deeper_Event_SubTurning>(SubStateHandler);
+        Deeper_EventManager.instance.Unregister<Deeper_Event_Narc>(NarcHandler);
     }
 
     private void Start()
@@ -346,6 +349,18 @@ public class Controlled_Character : Deeper_Component, ICurrentable {
         }
     }
 
+    private void NarcHandler(Deeper_Event e)
+    {
+        Deeper_Event_Narc n = e as Deeper_Event_Narc;
+        if (n != null)
+        {
+            if (n.whoIsNarced == thisChar)
+            {
+                _fsm.TransitionTo<Narc>();
+            }
+        }
+    }
+
     public void InteractInit(bool tF)
     {
         if (tF)
@@ -415,6 +430,8 @@ public class Controlled_Character : Deeper_Component, ICurrentable {
     #region Operating States
     private class State_Base : FSM<Controlled_Character>.State
     {
+        protected float[] narcAxis = new float[4];
+
         #region State Root Functions
         public virtual void Input()
         {
@@ -423,6 +440,15 @@ public class Controlled_Character : Deeper_Component, ICurrentable {
 
             Context._rightStickInput.x = ReInput.players.GetPlayer(Context.controllerNum).GetAxis("Light Horizontal");
             Context._rightStickInput.y = ReInput.players.GetPlayer(Context.controllerNum).GetAxis("Light Vertical");
+        }
+
+        public virtual void InputNarc()
+        {
+            narcAxis[0] = ReInput.players.GetPlayer(Context.controllerNum).GetAxis("Swim Horizontal");
+            narcAxis[1] = ReInput.players.GetPlayer(Context.controllerNum).GetAxis("Swim Vertical");
+
+            narcAxis[2] = ReInput.players.GetPlayer(Context.controllerNum).GetAxis("Light Horizontal");
+            narcAxis[3] = ReInput.players.GetPlayer(Context.controllerNum).GetAxis("Light Vertical");
         }
 
         public virtual void SetFaceDir()
@@ -607,6 +633,104 @@ public class Controlled_Character : Deeper_Component, ICurrentable {
             if (Context._gnd)
                 TransitionTo<Standing>();
         }
+        public override void OnExit()
+        {
+            base.OnExit();
+        }
+    }
+
+    private class Narc : State_Base
+    {
+        public override void OnEnter()
+        {
+            base.OnEnter();
+            Context._SetPhysMatStick();
+            if (!Context.isOOC)
+                ControlsSetOutside(Context.thisChar);
+        remappings = new int[4];
+        posNegMultipliers = new int[4];
+        narcDurationTimer = 0;
+            narcRemapTimer = 0;
+            narcRemapRollover = Random.Range(.7f, 1.5f);
+            PerformRemap();
+        }
+
+        private float narcRemapTimer;
+        private float narcRemapRollover;
+        private int[] remappings;
+        private int[] posNegMultipliers;
+        private List<int> mappingOptions = new List<int>();
+
+        private float narcDurationTimer;
+
+        private void PerformRemap()
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                mappingOptions.Add(i);
+            }
+
+            for (int i = 0; i < 4; i++)
+            {
+                int pull = Random.Range(0, mappingOptions.Count);
+                remappings[i] = mappingOptions[pull];
+                mappingOptions.Remove(mappingOptions[pull]);
+                Debug.Log(pull);
+
+                posNegMultipliers[i] = (Random.Range(0, 2) * 2) - 1;
+            }
+        }
+
+        public override void Update()
+        {
+            base.Update();
+
+            InputNarc();
+
+            Context._BreathingUpdate();
+
+            IngressCheck();
+            InteractCheck(Context.thisChar);
+
+            narcRemapTimer += Time.deltaTime;
+            if (narcRemapTimer >= narcRemapRollover)
+            {
+                narcRemapTimer -= narcRemapRollover;
+                narcRemapRollover = Random.Range(.7f, 1.5f);
+                PerformRemap();
+            }
+
+            //NarcMove
+            if (Mathf.Sqrt((narcAxis[remappings[0]] * narcAxis[remappings[0]]) + (narcAxis[remappings[1]] * narcAxis[remappings[1]])) > .15f && Context.airAvailable)
+            {
+                Context._boosting = true;
+                Context._boostForceVector = Context.boostingForceScalar * new Vector3(narcAxis[remappings[0]] * posNegMultipliers[0], narcAxis[remappings[1]] * posNegMultipliers[1], 0);
+            }
+            else
+            {
+                Context._boosting = false;
+                Context._boostForceVector = Vector3.zero;
+            }
+            //NarcLight
+            if (narcAxis[remappings[2]] * narcAxis[remappings[2]] + narcAxis[remappings[3]] * narcAxis[remappings[3]] > .7f)
+            {
+                if (Context.currentFacing == Facing.Right && narcAxis[remappings[2]] * posNegMultipliers[2] > 0)
+                {
+                    Context._lightAng = Mathf.Clamp(Mathf.Atan2(narcAxis[remappings[3]] * posNegMultipliers[3], narcAxis[remappings[2]] * posNegMultipliers[2]) * Mathf.Rad2Deg, -60, 60);
+                }
+                else if (Context.currentFacing == Facing.Left && narcAxis[remappings[2]] * posNegMultipliers[2] < 0)
+                {
+                    Context._lightAng = Mathf.Clamp(Mathf.Atan2(narcAxis[remappings[3]] * posNegMultipliers[3], narcAxis[remappings[2]] * posNegMultipliers[2]) * Mathf.Rad2Deg, -60, 60);
+                }
+            }
+
+            narcDurationTimer += Time.deltaTime;
+            if (narcDurationTimer >= 35)
+            {
+                TransitionTo<Floating>();
+            }
+        }
+
         public override void OnExit()
         {
             base.OnExit();
