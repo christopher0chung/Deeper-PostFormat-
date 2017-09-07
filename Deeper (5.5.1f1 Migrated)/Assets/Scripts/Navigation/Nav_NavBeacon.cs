@@ -30,6 +30,7 @@ public class Nav_NavBeacon : Deeper_Component
         MakeCircle();
         _fsm = new FSM<Nav_NavBeacon>(this);
         _fsm.TransitionTo<Dwell>();
+        Deeper_EventManager.instance.Fire(new Deeper_Event_Nav(true, transform.position));
     }
 
     private float timer;
@@ -74,100 +75,7 @@ public class Nav_NavBeacon : Deeper_Component
 
     }
 
-    //private class Grow : State_Base
-    //{
-    //    protected Vector3[] circle;
-
-    //    public override void OnEnter()
-    //    {
-    //        circle = new Vector3[Context.unitCircle.Length];
-    //        Context.GetComponent<LineRenderer>().numPositions = circle.Length;
-    //        Context.radius = 0;
-    //        Context._toggleLightOnYet = false;
-    //    }
-
-    //    public override void Update()
-    //    {
-    //        Context.radius += Context.radiusRate * Time.deltaTime;
-    //        for (int i = 0; i < Context.unitCircle.Length; i++)
-    //        {
-    //            circle[i] = Context.loci + Context.radius * Context.unitCircle[i];
-    //        }
-    //        Context.GetComponent<LineRenderer>().SetPositions(circle);
-
-    //        if (Context.radius >= Vector3.Distance(Context.sub.transform.position, Context.transform.position) && !Context._toggleLightOnYet)
-    //        {
-    //            Context.sub.GetComponent<Mech_NavPingLight>().PingHit();
-    //            Context._toggleLightOnYet = true;
-    //        }
-
-    //        if (Context.radius >= 200)
-    //        {
-    //            TransitionTo<State_Base>();
-    //        }
-    //    }
-
-    //    public override void OnExit()
-    //    {
-    //        Context.radius = 0;
-    //        for (int i = 0; i < Context.unitCircle.Length; i++)
-    //        {
-    //            circle[i] = Context.loci + Context.radius * Context.unitCircle[i];
-    //        }
-    //        Context.GetComponent<LineRenderer>().SetPositions(circle);
-    //    }
-    //}
-
-    //private class LastPing : State_Base
-    //{
-    //    protected Vector3[] circle;
-
-    //    public override void OnEnter()
-    //    {
-    //        Debug.Log("In Last Ping");
-    //        circle = new Vector3[Context.unitCircle.Length];
-    //        Context.GetComponent<LineRenderer>().numPositions = circle.Length;
-    //        Context.radius = 0;
-    //        Context._toggleLightOnYet = false;
-    //    }
-
-    //    public override void Update()
-    //    {
-    //        Context.radius += Context.radiusRate * Time.deltaTime;
-    //        Debug.Log("radius is now " + Context.radius);
-    //        for (int i = 0; i < Context.unitCircle.Length; i++)
-    //        {
-    //            circle[i] = Context.loci + Context.radius * Context.unitCircle[i];
-    //        }
-    //        Context.GetComponent<LineRenderer>().SetPositions(circle);
-
-    //        if (Context.radius >= Vector3.Distance(Context.sub.transform.position, Context.transform.position) && !Context._toggleLightOnYet)
-    //        {
-    //            Context.sub.GetComponent<Mech_NavPingLight>().BigPingHit();
-    //            Context._toggleLightOnYet = true;
-    //        }
-
-    //        if (Context.radius >= 200)
-    //        {
-    //            Debug.Log("Radius is greater than 200");
-    //            TransitionTo<State_Base>();
-    //        }
-    //    }
-
-    //    public override void OnExit()
-    //    {
-    //        Debug.Log("On Exit");
-    //        Context.radius = 0;
-    //        for (int i = 0; i < Context.unitCircle.Length; i++)
-    //        {
-    //            circle[i] = Context.loci + Context.radius * Context.unitCircle[i];
-    //        }
-    //        Context.GetComponent<LineRenderer>().SetPositions(circle);
-    //        base.OnExit();
-    //        Context.gameObject.SetActive(false);
-    //    }
-    //}
-
+ 
     private class Dwell : State_Base
     {
         private float timer;
@@ -244,6 +152,7 @@ public class Nav_NavBeacon : Deeper_Component
             Context.radius = 0;
             Context._toggleLightOnYet = false;
             timer = 0;
+            Deeper_EventManager.instance.Fire(new Deeper_Event_Nav(false, Vector3.zero));
         }
 
         public override void Update()

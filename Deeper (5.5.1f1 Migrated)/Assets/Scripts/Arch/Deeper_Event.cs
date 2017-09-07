@@ -138,3 +138,19 @@ public class Deeper_Event_Narc : Deeper_Event
         whoIsNarced = who;
     }
 }
+
+//--------------------------------------------
+// Navigation
+//--------------------------------------------
+
+public class Deeper_Event_Nav : Deeper_Event
+{
+    public bool navActive;
+    public Vector3 toWhere;
+
+    public Deeper_Event_Nav (bool startUpTShutDownF, Vector3 location)
+    {
+        navActive = startUpTShutDownF;
+        toWhere = location;
+    }
+}

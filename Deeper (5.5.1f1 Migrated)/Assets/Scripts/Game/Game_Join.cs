@@ -102,6 +102,11 @@ public class Game_Join : MonoBehaviour {
     {
         _fsm = new FSM<Game_Join>(this);
         _fsm.TransitionTo<P0>();
+
+        if (GameObject.Find("Managers") == null)
+        {
+            Instantiate(Resources.Load("Managers/Managers"));
+        }
     }
 
     void Update()
