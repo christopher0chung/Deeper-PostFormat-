@@ -105,9 +105,9 @@ public class Deeper_Menu0_Type0 : Deeper_Menu0 {
                 {
                     axisFlag[i] = true;
                     if (ReInput.players.GetPlayer(i).GetAxis("Menu Select Vertical") > 0)
-                        Context._selectNum.intVal++;
-                    else
                         Context._selectNum.intVal--;
+                    else
+                        Context._selectNum.intVal++;
                 }
                 else if (Mathf.Abs(ReInput.players.GetPlayer(i).GetAxis("Menu Select Vertical")) <= .25f)
                 {

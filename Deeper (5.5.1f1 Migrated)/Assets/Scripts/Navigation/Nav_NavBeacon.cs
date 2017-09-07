@@ -215,7 +215,7 @@ public class Nav_NavBeacon : Deeper_Component
                 Context._toggleLightOnYet = true;
             }
 
-            if (timer >= Context.pingTravelTime)
+            if (timer >= 1)
             {
                 TransitionTo<Dwell>();
             }
@@ -226,7 +226,7 @@ public class Nav_NavBeacon : Deeper_Component
             Context.radius = 0;
             for (int i = 0; i < Context.unitCircle.Length; i++)
             {
-                circle[i] = Context.loci + Context.radius * Context.unitCircle[i];
+                circle[i] = Vector3.zero;
             }
             Context.GetComponent<LineRenderer>().SetPositions(circle);
         }

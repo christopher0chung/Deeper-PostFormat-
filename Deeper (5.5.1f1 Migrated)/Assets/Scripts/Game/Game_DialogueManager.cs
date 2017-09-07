@@ -5,9 +5,13 @@ using UnityEngine;
 using UnityEngine.UI;
 using Rewired;
 
+[RequireComponent(typeof(AudioSource))]
+
 public class Game_DialogueManager : Deeper_Component {
 
     private Game_CameraController _myGCG;
+    private AudioSource _myAS;
+    private AudioClip _activeLineClip;
 
     private GameObject cam_com;
     private GameObject cam_c1;
@@ -30,6 +34,7 @@ public class Game_DialogueManager : Deeper_Component {
     {
         Initialize(5000);
         Deeper_EventManager.instance.Register<Deeper_Event_CamSingleSplit>(_CamEvents);
+        Deeper_EventManager.instance.Register<Deeper_Event_Pause>(_PauseHandler);
     }
 
     void Start()
@@ -49,6 +54,7 @@ public class Game_DialogueManager : Deeper_Component {
     {
         base.Unsub(e);
         Deeper_EventManager.instance.Unregister<Deeper_Event_CamSingleSplit>(_CamEvents);
+        Deeper_EventManager.instance.Unregister<Deeper_Event_Pause>(_PauseHandler);
     }
     #endregion
 
@@ -56,6 +62,7 @@ public class Game_DialogueManager : Deeper_Component {
     private void _GetRefs()
     {
         _myGCG = GameObject.Find("Managers_Game").GetComponent<Game_CameraController>();
+        _myAS = GetComponent<AudioSource>();
         cam_com = _myGCG.cam_com;
         cam_c1 = _myGCG.cam_c1;
         cam_c2 = _myGCG.cam_c2;
@@ -67,6 +74,17 @@ public class Game_DialogueManager : Deeper_Component {
         if (c != null)
         {
             //Do something
+        }
+    }
+    private void _PauseHandler(Deeper_Event e)
+    {
+        Deeper_Event_Pause p = e as Deeper_Event_Pause;
+        if (p != null)
+        {
+            if (p.isPaused)
+                _myAS.Pause();
+            else
+                _myAS.UnPause();
         }
     }
 
@@ -135,6 +153,15 @@ public class Game_DialogueManager : Deeper_Component {
             Context.myP1Choices.text = "";
             Context.myP2Choices.text = "";
             Context._UIOff();
+        }
+
+        public void _LoadAndPlayAudio()
+        {
+            Context._activeLineClip = (AudioClip)Resources.Load("Dialogue/" + Context.activeLine.gameObject.name);
+            Context._myAS.Stop();
+            Context._myAS.loop = false;
+            Context._myAS.clip = Context._activeLineClip;
+            Context._myAS.Play();
         }
 
         public void _ParseAndTransition()
@@ -294,14 +321,16 @@ public class Game_DialogueManager : Deeper_Component {
         public override void OnEnter()
         {
             //Debug.Log("Now in PrintLine");
-            timer = 0;
-            transitionTime = 3;
 
             Debug.Assert(Context.activeLine as Dialogue_Line, "Dialogue_Line not sent to expected state");
             l = Context.activeLine as Dialogue_Line;
 
             Context.myTranscipt.text = "<color=#FFFFFFFF>" + l.speaker.ToString() + ": <color=#FFFFFF00>" + l.line;
             wordCount = WordCount(l.line);
+
+            _LoadAndPlayAudio();
+            timer = 0;
+            transitionTime = Context._activeLineClip.length + .1f;
         }
 
         int spaceCounter;
@@ -343,15 +372,17 @@ public class Game_DialogueManager : Deeper_Component {
 
         public override void OnEnter()
         {
-            Debug.Log("Now in PrintTerminalLine");
-            timer = 0;
-            transitionTime = 3;
 
             Debug.Assert(Context.activeLine as Dialogue_LineTerminal, "Dialogue_Line not sent to expected state");
             t = Context.activeLine as Dialogue_LineTerminal;
 
             Context.myTranscipt.text = "<color=#FFFFFFFF>" + t.speaker.ToString() + ": <color=#FFFFFF00>" + t.line;
             wordCount = WordCount(t.line);
+
+            _LoadAndPlayAudio();
+            Debug.Log("Now in PrintTerminalLine");
+            timer = 0;
+            transitionTime = Context._activeLineClip.length + .1f;
         }
 
         int spaceCounter;

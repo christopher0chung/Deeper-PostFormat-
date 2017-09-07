@@ -1091,6 +1091,10 @@ public class Task_SmokeMonster : Task
 
     bool appliedNarcYet;
 
+    private float timerSinceStart;
+
+    bool finalFlickerDone;
+
     public override void TaskDeeperNormUpdate()
     {
         if (flyAway)
@@ -1116,8 +1120,22 @@ public class Task_SmokeMonster : Task
         }
 
 
-        if (flickCounter >= 15)
+        if (timerSinceStart >= 3)
         {
+            if (!finalFlickerDone)
+            {
+                finalFlickerDone = true;
+                foreach (GameObject x in l)
+                {
+                    x.SetActive(true);
+                }
+
+                foreach (GameObject x in h)
+                {
+                    x.GetComponent<MeshRenderer>().material = onMat;
+                }
+            }
+
             monster.SetActive(true);
             flickCounter++;
             monster.transform.position = Vector3.MoveTowards(monster.transform.position, playerOfConcern.transform.position, 30 * Time.deltaTime);
@@ -1130,6 +1148,7 @@ public class Task_SmokeMonster : Task
 
 
         timer += Time.deltaTime;
+        timerSinceStart += Time.deltaTime;
         if (timer > rollOver)
         {
             timer -= rollOver;
