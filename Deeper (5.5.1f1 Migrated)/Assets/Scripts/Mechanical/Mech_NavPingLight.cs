@@ -58,6 +58,7 @@ public class Mech_NavPingLight : Deeper_Component {
         _bigPingStart = false;
         _intensityApplied = _intensityStart;
         pingLight.intensity = _intensityApplied;
+        Deeper_ServicesLocator.instance.SFXManager.PlaySoundOneHit(SFX.Ping);
     }
 
     public void BigPingHit()
@@ -68,5 +69,6 @@ public class Mech_NavPingLight : Deeper_Component {
         _bigPingStart = true;
         _intensityApplied = _intensityStart;
         pingLight.intensity = _intensityApplied;
+        Deeper_ServicesLocator.instance.SFXManager.PlaySoundOneHit(SFX.Ping);
     }
 }

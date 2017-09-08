@@ -16,7 +16,8 @@ public class Nav_Repeater : Deeper_Component {
     public SpriteRenderer[] pointerSprites;
 
     private Color destColor = new Color(176f / 255f, 1, 203f / 255f, .04f);
-    private Color hitColor = new Color(176f / 255f, 1, 203f / 255f, 1);
+    //private Color hitColor = new Color(176f / 255f, 1, 203f / 255f, 1);
+    private Color hitColor = Color.white;
 
     void Awake () {
         Initialize(4500);

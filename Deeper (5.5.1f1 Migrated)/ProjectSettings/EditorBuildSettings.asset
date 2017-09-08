@@ -13,3 +13,5 @@ EditorBuildSettings:
     path: Assets/Rebound.unity
   - enabled: 1
     path: Assets/PreEnding.unity
+  - enabled: 0
+    path: Assets/Sizzler.unity
