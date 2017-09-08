@@ -573,6 +573,24 @@ public class Deeper_ServicesLocator {
 
     #endregion
 
+    #region SFX Manager
+
+    private Deeper_SFXManager _sfm;
+    public Deeper_SFXManager SFXManager
+    {
+        get
+        {
+            if (_sfm == null)
+            {
+                GameObject sfm = new GameObject();
+                _sfm = sfm.AddComponent<Deeper_SFXManager>();
+            }
+            return _sfm;
+        }
+    }
+
+    #endregion
+
     #region Interactables Manager Reference
 
     #endregion

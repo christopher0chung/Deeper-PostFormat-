@@ -12,5 +12,6 @@ public class InteractionEffects_TriggerEnable : InteractionEffects_Base {
     public override void OnInteractedSuccess()
     {
         myT.enabled = true;
+        Deeper_ServicesLocator.instance.SFXManager.PlaySoundOneHit(SFX.Checkpoint);
     }
 }

@@ -123,6 +123,7 @@ public class Deeper_Menu0_Type1 : Deeper_Menu0 {
                 if (Mathf.Abs(ReInput.players.GetPlayer(i).GetAxis("Menu Select Horizontal")) > .25f && axisFlag[i] == false)
                 {
                     axisFlag[i] = true;
+                    Deeper_ServicesLocator.instance.SFXManager.PlaySoundOneHit(SFX.Toggle);
                     if (ReInput.players.GetPlayer(i).GetAxis("Menu Select Horizontal") > 0)
                         Context._selectNum.intVal++;
                     else
@@ -135,6 +136,8 @@ public class Deeper_Menu0_Type1 : Deeper_Menu0 {
 
                 if (ReInput.players.GetPlayer(i).GetButtonDown("Cancel"))
                 {
+                    Deeper_ServicesLocator.instance.SFXManager.PlaySoundOneHit(SFX.Cancel);
+
                     if (Context.myPathUp != null)
                     {
                         Deeper_Menu0_Type0 up = Context.myPathUp as Deeper_Menu0_Type0;

@@ -1080,6 +1080,10 @@ public class Task_SmokeMonster : Task
             Deeper_EventManager.instance.Fire(new Deeper_Event_ControlScheme(ControlStates.Ops_OOC));
 
         rollOver = 1;
+
+        Deeper_ServicesLocator.instance.SFXManager.PlaySoundPauseable(SFX.SmokeMonster_Music);
+        Deeper_ServicesLocator.instance.SFXManager.PlaySoundPauseable(SFX.SmokeMonster_Ring);
+        Deeper_ServicesLocator.instance.SFXManager.PlaySoundPauseable(SFX.SmokeMonster_Screech);
     }
 
     private float timer;

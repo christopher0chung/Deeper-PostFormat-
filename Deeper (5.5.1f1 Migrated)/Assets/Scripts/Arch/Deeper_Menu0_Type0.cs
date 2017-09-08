@@ -105,9 +105,15 @@ public class Deeper_Menu0_Type0 : Deeper_Menu0 {
                 {
                     axisFlag[i] = true;
                     if (ReInput.players.GetPlayer(i).GetAxis("Menu Select Vertical") > 0)
+                    {
                         Context._selectNum.intVal--;
+                        Deeper_ServicesLocator.instance.SFXManager.PlaySoundOneHit(SFX.Toggle);
+                    }
                     else
+                    {
                         Context._selectNum.intVal++;
+                        Deeper_ServicesLocator.instance.SFXManager.PlaySoundOneHit(SFX.Toggle);
+                    }
                 }
                 else if (Mathf.Abs(ReInput.players.GetPlayer(i).GetAxis("Menu Select Vertical")) <= .25f)
                 {
@@ -116,6 +122,8 @@ public class Deeper_Menu0_Type0 : Deeper_Menu0 {
 
                 if (ReInput.players.GetPlayer(i).GetButtonDown("Menu Accept"))
                 {
+                    Deeper_ServicesLocator.instance.SFXManager.PlaySoundOneHit(SFX.Select);
+
                     if (Context._options[Context._selectNum.intVal].GetComponent<Deeper_Menu0_Element>().myType == MenuElementType.Nav)
                         TransitionTo<Inactive>();
 
@@ -132,6 +140,7 @@ public class Deeper_Menu0_Type0 : Deeper_Menu0 {
                         {
                             up.TurnOn();
                             TransitionTo<Inactive>();
+                            Deeper_ServicesLocator.instance.SFXManager.PlaySoundOneHit(SFX.Cancel);
                         }
                     }
                     else

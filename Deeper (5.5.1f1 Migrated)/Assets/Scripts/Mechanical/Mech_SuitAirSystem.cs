@@ -21,6 +21,8 @@ public class Mech_SuitAirSystem : Deeper_Component
     public TMPro.TextMeshPro myTM;
     public GameObject warningLight;
 
+    private bool drownDeath;
+
     private void Awake()
     {
         Initialize(4000);
@@ -113,7 +115,11 @@ public class Mech_SuitAirSystem : Deeper_Component
             if (drowningTimer >= 10)
             {
                 //Debug.Log(Context.myCC.thisChar.ToString() + " has drowned.");
-                Deeper_ServicesLocator.instance.TaskManager.AddTask(new DeathTask_Drown());
+                if (!Context.drownDeath)
+                {
+                    Deeper_ServicesLocator.instance.TaskManager.AddTask(new DeathTask_Drown());
+                    Context.drownDeath = true;
+                }
             }
         }
 

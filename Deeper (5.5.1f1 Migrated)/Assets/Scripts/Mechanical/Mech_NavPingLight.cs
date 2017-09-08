@@ -53,6 +53,7 @@ public class Mech_NavPingLight : Deeper_Component {
     public void PingHit()
     {
         Debug.Log("Ping Hit");
+        Deeper_EventManager.instance.Fire(new Deeper_Event_NavBeaconPing());
         _pingStart = true;
         _bigPingStart = false;
         _intensityApplied = _intensityStart;
@@ -62,6 +63,7 @@ public class Mech_NavPingLight : Deeper_Component {
     public void BigPingHit()
     {
         Debug.Log("Ping Hit");
+        Deeper_EventManager.instance.Fire(new Deeper_Event_NavBeaconPing());
         _pingStart = false;
         _bigPingStart = true;
         _intensityApplied = _intensityStart;

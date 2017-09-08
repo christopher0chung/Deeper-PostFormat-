@@ -31,26 +31,25 @@ public class Game_Join : MonoBehaviour {
         }
     }
 
-    //private GameObject _cube1;
-    //private bool _p1S;
-    //private bool _p1Show
-    //{
-    //    get
-    //    {
-    //        return _p1S;
-    //    }
-    //    set
-    //    {
-    //        if (value != _p1S)
-    //        {
-    //            _p1S = value;
-    //            if (_p1S)
-    //                _cube1 = Instantiate(cube, new Vector3(-5, 0, 0), Quaternion.identity);
-    //            else
-    //                Destroy(_cube1);
-    //        }
-    //    }
-    //}
+    private bool _p1Hold;
+    private bool _p1Sound
+    {
+        get
+        {
+            return _p1Hold;
+        }
+        set
+        {
+            if (value != _p1Hold)
+            {
+                _p1Hold = value;
+                if (_p1Hold)
+                {
+                    Deeper_ServicesLocator.instance.SFXManager.PlaySoundOneHit(SFX.Select);
+                }
+            }
+        }
+    }
 
     private bool _p2Connected
     {
@@ -64,26 +63,25 @@ public class Game_Join : MonoBehaviour {
         }
     }
 
-    //private GameObject _cube2;
-    //private bool _p2S;
-    //private bool _p2Show
-    //{
-    //    get
-    //    {
-    //        return _p2S;
-    //    }
-    //    set
-    //    {
-    //        if (value != _p2S)
-    //        {
-    //            _p2S = value;
-    //            if (_p2S)
-    //                _cube2 = Instantiate(cube, new Vector3(5, 0, 0), Quaternion.identity);
-    //            else
-    //                Destroy(_cube2);
-    //        }
-    //    }
-    //}
+    private bool _p2Hold;
+    private bool _p2Sound
+    {
+        get
+        {
+            return _p2Hold;
+        }
+        set
+        {
+            if (value != _p2Hold)
+            {
+                _p2Hold = value;
+                if (_p2Hold)
+                {
+                    Deeper_ServicesLocator.instance.SFXManager.PlaySoundOneHit(SFX.Select);
+                }
+            }
+        }
+    }
 
     private bool _bothConnected
     {
@@ -111,8 +109,8 @@ public class Game_Join : MonoBehaviour {
 
     void Update()
     {
-        //_p1Show = _p1Connected;
-        //_p2Show = _p2Connected;
+        _p1Sound = _p1Connected;
+        _p2Sound = _p2Connected;
 
         if (_bothConnected)
         {
@@ -120,6 +118,8 @@ public class Game_Join : MonoBehaviour {
             if (ReInput.players.GetPlayer(0).GetButtonDown("Start") || ReInput.players.GetPlayer(1).GetButtonDown("Start"))
             {
                 SceneManager.LoadScene(1);
+                Deeper_ServicesLocator.instance.SFXManager.PlaySoundOneHit(SFX.Select);
+
                 //Debug.Log("Ready to play");
             }
         }

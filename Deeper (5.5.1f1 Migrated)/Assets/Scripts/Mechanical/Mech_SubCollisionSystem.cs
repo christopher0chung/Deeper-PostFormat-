@@ -64,6 +64,7 @@ public class Mech_SubCollisionSystem : Deeper_Component {
             Context.warningLight.GetComponent<Light>().intensity = 8;
             timer = 0;
             normTime = .75f;
+            Deeper_ServicesLocator.instance.SFXManager.PlaySoundOneHit(SFX.CrashDeath);
         }
 
         private float timer;

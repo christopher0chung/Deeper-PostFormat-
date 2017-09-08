@@ -88,6 +88,18 @@ public class UI_OldTVTubeBuddy : MonoBehaviour {
         if (_switchStaticMagnitude <= .005f)
             _transitionStaticInProgress = false;
     }
+    private void TenSec()
+    {
+        for (int i = 0; i < 10; i++)
+        {
+            Invoke("PlayStatic", i);
+        }
+    }
+
+    private void PlayStatic()
+    {
+        Deeper_ServicesLocator.instance.SFXManager.PlaySoundPauseable(SFX.Static, 1);
+    }
 
     #region States
 
@@ -103,6 +115,7 @@ public class UI_OldTVTubeBuddy : MonoBehaviour {
         {
             timer = 0;
             rollover = Random.Range(.3f, .6f);
+            Deeper_ServicesLocator.instance.SFXManager.PlaySoundPauseable(SFX.Static, .01f, .2f);
         }
 
         public override void Update()
@@ -150,6 +163,7 @@ public class UI_OldTVTubeBuddy : MonoBehaviour {
             rollover = 2.3f;
             _staticPoint = Context.fuzzTarget.transform.position;
             _interferenceRangeMax = Random.Range(10, 30);
+            Deeper_ServicesLocator.instance.SFXManager.PlaySoundPauseable(SFX.Static, .01f);
         }
 
         public override void Update()
@@ -172,6 +186,11 @@ public class UI_OldTVTubeBuddy : MonoBehaviour {
 
     private class FuzzDeath : State_Base
     {
+        public override void OnEnter()
+        {
+            Context.TenSec();
+        }
+
         public override void Update()
         {
             float n = Mathf.Lerp(Context._myS.noiseMagnetude, .8f, .05f);

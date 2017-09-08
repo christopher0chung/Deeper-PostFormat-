@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using System;
 using Rewired;
+using UnityEngine.SceneManagement;
 
 public enum MenuItemTypes { Basic, Toggle }
 
@@ -444,7 +445,9 @@ public class Deeper_MenuAid
 
     private void Restart()
     {
-        Debug.Log("Restart");
+        Deeper_EventManager.instance.Fire(new Deeper_Event_LevelUnload());
+
+        SceneManager.LoadScene(1);
     }
     #endregion
 

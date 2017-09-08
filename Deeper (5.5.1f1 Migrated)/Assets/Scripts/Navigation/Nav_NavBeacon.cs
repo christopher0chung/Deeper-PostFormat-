@@ -153,6 +153,7 @@ public class Nav_NavBeacon : Deeper_Component
             Context._toggleLightOnYet = false;
             timer = 0;
             Deeper_EventManager.instance.Fire(new Deeper_Event_Nav(false, Vector3.zero));
+            Deeper_ServicesLocator.instance.SFXManager.PlaySoundPauseable(SFX.Checkpoint);
         }
 
         public override void Update()

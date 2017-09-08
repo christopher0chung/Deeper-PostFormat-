@@ -21,6 +21,9 @@ public class Controlled_Sub : Deeper_Component, ICurrentable {
     public GameObject prop;
     public Transform lightWheel;
 
+    public Particle_Controller fwdBallast;
+    public Particle_Controller aftBallast;
+
     #region Private Variables
     private Rigidbody _rigidbody;
 
@@ -48,6 +51,12 @@ public class Controlled_Sub : Deeper_Component, ICurrentable {
     private float _lightWheelAng;
     private float _lightFloatUpDownP1;
     private float _lightFloatUpDownP2;
+
+    private bool _fwdBallastOpen;
+    private bool _aftBallastOpen;
+    private bool _negBuoyancy;
+    private bool _pitchUp;
+    private bool _pitchDown;
     #endregion
 
     #region Deeper_Component Functions
@@ -173,6 +182,38 @@ public class Controlled_Sub : Deeper_Component, ICurrentable {
 
         _deltaBuoyancyForceApplied = _deltaBuoyancyForce * linearVelComp;
     }
+
+    private void _CheckToEmit()
+    {
+        //Debug.Log(_deltaBuoyancyForceApplied);
+        if (_deltaBuoyancyForceApplied < -300)
+            _negBuoyancy = true;
+        else
+            _negBuoyancy = false;
+
+        if (_attitudeAngTarget > _attitudeAngActual + 1)
+            _pitchUp = true;
+        else
+            _pitchUp = false;
+
+        if (_attitudeAngTarget < _attitudeAngActual - 1)
+            _pitchDown = true;
+        else
+            _pitchDown = false;
+
+        if (_negBuoyancy || _pitchDown)
+            _fwdBallastOpen = true;
+        else
+            _fwdBallastOpen = false;
+
+        if (_negBuoyancy || _pitchUp)
+            _aftBallastOpen = true;
+        else
+            _aftBallastOpen = false;
+
+        fwdBallast.OnOff(_fwdBallastOpen);
+        aftBallast.OnOff(_aftBallastOpen);
+    }
 #endregion
 
 #region States
@@ -256,6 +297,7 @@ public class Controlled_Sub : Deeper_Component, ICurrentable {
 
             TestToTurn(true, -.7f, 5f);
             ChangeLightAng();
+            Context._CheckToEmit();
         }
     }
 
@@ -279,6 +321,7 @@ public class Controlled_Sub : Deeper_Component, ICurrentable {
 
             TestToTurn(false, .7f, 5f);
             ChangeLightAng();
+            Context._CheckToEmit();
         }
     }
 

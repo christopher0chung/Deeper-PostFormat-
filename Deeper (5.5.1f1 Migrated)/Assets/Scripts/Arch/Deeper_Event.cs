@@ -154,3 +154,5 @@ public class Deeper_Event_Nav : Deeper_Event
         toWhere = location;
     }
 }
+
+public class Deeper_Event_NavBeaconPing : Deeper_Event { }

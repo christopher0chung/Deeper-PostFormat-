@@ -104,6 +104,8 @@ public class Game_CameraController : MonoBehaviour {
 
             Deeper_EventManager.instance.Fire(new Deeper_Event_CamSwitch());
             Deeper_EventManager.instance.Fire(new Deeper_Event_CamSingleSplit(false));
+
+            Deeper_ServicesLocator.instance.SFXManager.PlaySoundPauseable(SFX.Static, .1f, .1f);
         }
 
         public override void Update()
@@ -127,6 +129,8 @@ public class Game_CameraController : MonoBehaviour {
 
             Deeper_EventManager.instance.Fire(new Deeper_Event_CamSwitch());
             Deeper_EventManager.instance.Fire(new Deeper_Event_CamSingleSplit(true));
+
+            Deeper_ServicesLocator.instance.SFXManager.PlaySoundPauseable(SFX.Static, .1f, .1f);
         }
 
         public override void Update()
@@ -147,6 +151,8 @@ public class Game_CameraController : MonoBehaviour {
             Context.cam_UI.GetComponent<Game_CameraLogic>().TurnOff();
 
             Deeper_EventManager.instance.Fire(new Deeper_Event_CamSwitch());
+
+            Deeper_ServicesLocator.instance.SFXManager.PlaySoundPauseable(SFX.Static, .1f, .1f);
         }
     }
     

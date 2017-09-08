@@ -7,17 +7,19 @@ public class InteractionEffects_SmokeMonster : InteractionEffects_Base
     public Dialogue_Org_Conversation OpsVersion;
     public Dialogue_Org_Conversation DocVersion;
 
-    public GameObject TriggerToEnableAfter;
+    public GameObject[] ObjectsToEnableAfter;
 
     private void Start()
     {
-        TriggerToEnableAfter.SetActive(false);
+        foreach(GameObject g in ObjectsToEnableAfter)
+            g.SetActive(false);
     }
 
     public override void OnInteractedSuccess()
     {
         Deeper_ServicesLocator.instance.TaskManager.AddTask(new Task_SmokeMonster());
         Invoke("FireDialogue", 5);
+        Deeper_ServicesLocator.instance.SFXManager.PlaySoundPauseable(SFX.Narc);
     }
 
     public override void OnInteractedFail()
@@ -31,6 +33,7 @@ public class InteractionEffects_SmokeMonster : InteractionEffects_Base
             DocVersion.Fire();
         else
             OpsVersion.Fire();
-        TriggerToEnableAfter.SetActive(true);
+        foreach (GameObject g in ObjectsToEnableAfter)
+            g.SetActive(false);
     }
 }

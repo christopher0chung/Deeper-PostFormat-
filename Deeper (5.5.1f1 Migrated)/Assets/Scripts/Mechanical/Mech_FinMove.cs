@@ -28,8 +28,21 @@ public class Mech_FinMove : Deeper_Component {
             xVal = Random.Range(minEuler.x, maxEuler.x);
             yVal = Random.Range(minEuler.y, maxEuler.y);
             zVal = Random.Range(minEuler.z, maxEuler.z);
+
+            PlayASound();
         }
 
         transform.localRotation = Quaternion.Slerp(transform.localRotation, Quaternion.Euler(new Vector3(xVal, yVal, zVal)), .05f);
+    }
+
+    private void PlayASound()
+    {
+        int which = Random.Range(0, 10);
+        if (which == 0)
+            Deeper_ServicesLocator.instance.SFXManager.PlaySoundPauseable(SFX.Squeak_Hi1, .001f);
+        else if (which == 1)
+            Deeper_ServicesLocator.instance.SFXManager.PlaySoundPauseable(SFX.Squeak_Hi2, .001f);
+        else
+            Deeper_ServicesLocator.instance.SFXManager.PlaySoundPauseable(SFX.Squeak_Hi3, .001f);
     }
 }
