@@ -2723,6 +2723,49 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 322490484}
   m_Mesh: {fileID: 0}
+--- !u!1 &354561340
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 354561341}
+  - component: {fileID: 354561342}
+  m_Layer: 0
+  m_Name: CONVOXX_ToBC
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &354561341
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 354561340}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1652945952}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &354561342
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 354561340}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab4018f8ea12014458267c2418b47f70, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  delayTime: 0
+  speaker: 2
+  line: 'To be continued. '
 --- !u!1 &381503189
 GameObject:
   m_ObjectHideFlags: 0
@@ -3136,7 +3179,7 @@ MonoBehaviour:
   FogTransitionSize: 5
   MaxLightDistance: 128
   AboveFogPercent: 0.1
-  Offset: {x: 539.5437, y: 539.5437, z: 0}
+  Offset: {x: 544.81903, y: 544.81903, z: 0}
 --- !u!108 &404192668
 Light:
   m_ObjectHideFlags: 0
@@ -16532,7 +16575,7 @@ MonoBehaviour:
   FogTransitionSize: 5
   MaxLightDistance: 128
   AboveFogPercent: 0.1
-  Offset: {x: 539.5437, y: 539.5437, z: 0}
+  Offset: {x: 544.81903, y: 544.81903, z: 0}
 --- !u!108 &1370010200
 Light:
   m_ObjectHideFlags: 0
@@ -16890,7 +16933,7 @@ MonoBehaviour:
   FogTransitionSize: 5
   MaxLightDistance: 128
   AboveFogPercent: 0.1
-  Offset: {x: 26310.373, y: 26310.373, z: 0}
+  Offset: {x: 26315.654, y: 26315.654, z: 0}
 --- !u!108 &1391459416
 Light:
   m_ObjectHideFlags: 0
@@ -21075,6 +21118,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 207658784}
+  - {fileID: 354561341}
   m_Father: {fileID: 1945755159}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -23122,7 +23166,7 @@ MonoBehaviour:
   FogTransitionSize: 5
   MaxLightDistance: 128
   AboveFogPercent: 0.1
-  Offset: {x: 26310.021, y: 26310.021, z: 0}
+  Offset: {x: 26315.303, y: 26315.303, z: 0}
 --- !u!108 &1774247009
 Light:
   m_ObjectHideFlags: 0
@@ -24624,6 +24668,9 @@ MonoBehaviour:
   interactablesToEnable: []
   conversationToFire: {fileID: 1945755158}
   conversationToDisable: {fileID: 0}
+  fireBatteryEvent: 0
+  batteryLevelToSet: 0
+  ObjectsToEnableAfter: []
 --- !u!1 &1945755157
 GameObject:
   m_ObjectHideFlags: 0

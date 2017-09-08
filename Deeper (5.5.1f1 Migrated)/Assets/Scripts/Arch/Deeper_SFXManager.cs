@@ -36,6 +36,11 @@ public class Deeper_SFXManager : MonoBehaviour {
             sFXToClip.Add(SFX.Squeak_Low3, (AudioClip)Resources.Load("SFX/TEMPO0-N-Metal Squeak low 3"));
             sFXToClip.Add(SFX.Static, (AudioClip)Resources.Load("SFX/TEMPO0-L-Static 1s"));
 
+            sFXToClip.Add(SFX.Breath_Ops, (AudioClip)Resources.Load("SFX/TEMPO0-N-Breathing 2 low"));
+            sFXToClip.Add(SFX.Breath_Doc, (AudioClip)Resources.Load("SFX/TEMPO0-N-Breathing 3 high"));
+            sFXToClip.Add(SFX.Alarm, (AudioClip)Resources.Load("SFX/TEMPO0-N-Oxygen Warning slow"));
+            sFXToClip.Add(SFX.Ping, (AudioClip)Resources.Load("SFX/TEMPO0-N-Radar Ping"));
+
             _myAS = GetComponent<AudioSource>();
         }
     }
@@ -100,4 +105,4 @@ public class Deeper_SFXManager : MonoBehaviour {
     }
 }
 
-public enum SFX { Toggle, Select, Cancel, CrashDeath, Narc, SmokeMonster_Music, SmokeMonster_Ring, SmokeMonster_Screech, Checkpoint, Squeak_Hi1, Squeak_Hi2, Squeak_Hi3, Squeak_Low1, Squeak_Low2, Squeak_Low3, Static }
+public enum SFX { Toggle, Select, Cancel, CrashDeath, Narc, SmokeMonster_Music, SmokeMonster_Ring, SmokeMonster_Screech, Checkpoint, Squeak_Hi1, Squeak_Hi2, Squeak_Hi3, Squeak_Low1, Squeak_Low2, Squeak_Low3, Static, Breath_Ops, Breath_Doc, Ping, Alarm }

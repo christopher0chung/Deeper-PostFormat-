@@ -4,10 +4,13 @@ using UnityEngine;
 using Rewired;
 
 [RequireComponent(typeof(Rigidbody))] 
+[RequireComponent(typeof(AudioSource))]
 
 public class Controlled_Sub : Deeper_Component, ICurrentable {
 
     private FSM<Controlled_Sub> _fsm;
+
+    private AudioSource _myAS;
 
     public float moveForceScalar;
     public float attitudeSpeedScalar;
@@ -74,6 +77,9 @@ public class Controlled_Sub : Deeper_Component, ICurrentable {
 
         _PSCFwd = prop.transform.Find("Fwd").GetComponent<Particle_Controller>();
         _PSCAft = prop.transform.Find("Aft").GetComponent<Particle_Controller>();
+
+        _myAS = GetComponent<AudioSource>();
+        _myAS.volume = 0;
     }
 
     private Vector3 _rotAng;
@@ -97,6 +103,7 @@ public class Controlled_Sub : Deeper_Component, ICurrentable {
         _ApplyClamps();
         _LerpToTargets();
         _VelocityCompBuoyancy();
+        _AssessMotorAudio();
 
         if (canDrive)
             _rigidbody.AddForce(Quaternion.Euler(0, _headingAngActual, _attitudeAngActual) * Vector3.right * _linearThrust + _deltaBuoyancyForceApplied * Vector3.up);
@@ -213,6 +220,23 @@ public class Controlled_Sub : Deeper_Component, ICurrentable {
 
         fwdBallast.OnOff(_fwdBallastOpen);
         aftBallast.OnOff(_aftBallastOpen);
+    }
+
+    private float _motorPerc;
+
+    private void _AssessMotorAudio()
+    {
+        _motorPerc = Mathf.Lerp(_motorPerc, ((_maneuveringFloats[0] + _maneuveringFloats[1]) / 2), .02f);
+        if (canDrive)
+        {
+            _myAS.volume = (Mathf.Abs(_motorPerc) / 5);
+            _myAS.pitch = (Mathf.Lerp(1.2f, 1.6f, Mathf.Abs(_motorPerc)));
+        }
+        else
+        {
+            _myAS.volume = (Mathf.Lerp(0, .1f, Mathf.Abs(_motorPerc)));
+            _myAS.pitch = (Mathf.Lerp(.5f, .6f, Mathf.Abs(_motorPerc)));
+        }
     }
 #endregion
 

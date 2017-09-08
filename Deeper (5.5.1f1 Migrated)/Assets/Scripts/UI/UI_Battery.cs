@@ -36,6 +36,7 @@ public class UI_Battery : Deeper_Component {
 
 	void Awake () {
         Initialize(2000);
+        _battIndPercApplied = .5f;
         _localScale = startVal * Vector3.one / 2;
         NewChargeLevel(startVal);
         Deeper_EventManager.instance.Register<Deeper_Event_BattLvl>(BatteryHandler);

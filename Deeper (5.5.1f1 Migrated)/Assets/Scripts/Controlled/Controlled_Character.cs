@@ -94,6 +94,13 @@ public class Controlled_Character : Deeper_Component, ICurrentable {
             {
                 _br = value;
                 breathPart.OnOff(_br);
+                if (_br)
+                {
+                    if (thisChar == CharactersEnum.Ops)
+                        Deeper_ServicesLocator.instance.SFXManager.PlaySoundOneHit(SFX.Breath_Ops);
+                    else
+                        Deeper_ServicesLocator.instance.SFXManager.PlaySoundOneHit(SFX.Breath_Doc);
+                }
             }
         }
     }

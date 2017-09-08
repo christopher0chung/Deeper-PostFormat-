@@ -95,6 +95,7 @@ public class Mech_SuitAirSystem : Deeper_Component
             Context.myCC.airAvailable = false;
             Context.warningLight.SetActive(true);
             onOff = true;
+            Deeper_ServicesLocator.instance.SFXManager.PlaySoundPauseable(SFX.Alarm);
         }
 
         public override void Update()

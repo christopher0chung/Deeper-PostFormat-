@@ -21,11 +21,11 @@ public class Particle_Controller : Deeper_Component {
     }
 
     private float timer;
-    private bool _on;
+    public bool on { get; private set; }
 
     public override void NormUpdate()
     {
-        if (_on)
+        if (on)
         {
             timer += Time.deltaTime;
 
@@ -41,6 +41,6 @@ public class Particle_Controller : Deeper_Component {
 
     public void OnOff(bool onTrueOffFalse)
     {
-        _on = onTrueOffFalse;
+        on = onTrueOffFalse;
     }
 }
