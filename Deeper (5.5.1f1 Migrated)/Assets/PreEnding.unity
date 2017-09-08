@@ -3136,7 +3136,7 @@ MonoBehaviour:
   FogTransitionSize: 5
   MaxLightDistance: 128
   AboveFogPercent: 0.1
-  Offset: {x: 537.2865, y: 537.2865, z: 0}
+  Offset: {x: 539.5437, y: 539.5437, z: 0}
 --- !u!108 &404192668
 Light:
   m_ObjectHideFlags: 0
@@ -14058,7 +14058,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: 'NO2: Low'
+  m_text: 'N2: Low'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0f220383122b5f344aa649cd65718ae7, type: 2}
   m_sharedMaterial: {fileID: 21309088738197786, guid: 0f220383122b5f344aa649cd65718ae7,
@@ -14126,7 +14126,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 1037674338}
-    characterCount: 8
+    characterCount: 7
     spriteCount: 0
     spaceCount: 1
     wordCount: 2
@@ -16532,7 +16532,7 @@ MonoBehaviour:
   FogTransitionSize: 5
   MaxLightDistance: 128
   AboveFogPercent: 0.1
-  Offset: {x: 537.2865, y: 537.2865, z: 0}
+  Offset: {x: 539.5437, y: 539.5437, z: 0}
 --- !u!108 &1370010200
 Light:
   m_ObjectHideFlags: 0
@@ -16890,7 +16890,7 @@ MonoBehaviour:
   FogTransitionSize: 5
   MaxLightDistance: 128
   AboveFogPercent: 0.1
-  Offset: {x: 26308.113, y: 26308.113, z: 0}
+  Offset: {x: 26310.373, y: 26310.373, z: 0}
 --- !u!108 &1391459416
 Light:
   m_ObjectHideFlags: 0
@@ -23122,7 +23122,7 @@ MonoBehaviour:
   FogTransitionSize: 5
   MaxLightDistance: 128
   AboveFogPercent: 0.1
-  Offset: {x: 26307.762, y: 26307.762, z: 0}
+  Offset: {x: 26310.021, y: 26310.021, z: 0}
 --- !u!108 &1774247009
 Light:
   m_ObjectHideFlags: 0
@@ -24733,7 +24733,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: 'NO2: Low'
+  m_text: 'N2: Low'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0f220383122b5f344aa649cd65718ae7, type: 2}
   m_sharedMaterial: {fileID: 21309088738197786, guid: 0f220383122b5f344aa649cd65718ae7,
@@ -24801,7 +24801,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 1948091787}
-    characterCount: 8
+    characterCount: 7
     spriteCount: 0
     spaceCount: 1
     wordCount: 2
@@ -26399,7 +26399,7 @@ Transform:
   m_GameObject: {fileID: 2075824990}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 7.5, z: 8.7}
-  m_LocalScale: {x: 0.5, y: 0.05, z: 0.5}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children: []
   m_Father: {fileID: 970954721}
   m_RootOrder: 1

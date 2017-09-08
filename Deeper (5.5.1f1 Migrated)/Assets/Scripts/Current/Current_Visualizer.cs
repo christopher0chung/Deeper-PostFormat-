@@ -7,16 +7,16 @@ using UnityEngine;
 [RequireComponent(typeof(Particle_Controller))]
 public class Current_Visualizer : Deeper_Component, ICurrentable {
 
-    private ParticleSystem _myPS;
+    //private ParticleSystem _myPS;
     private Rigidbody _myRB;
-    private Particle_Controller _myPC;
+    //private Particle_Controller _myPC;
     private Transform myP;
 
 	void Start () {
         Initialize(4000);
         _myRB = GetComponent<Rigidbody>();
-        _myPS = GetComponent<ParticleSystem>();
-        _myPC = GetComponent<Particle_Controller>();
+        //_myPS = GetComponent<ParticleSystem>();
+        //_myPC = GetComponent<Particle_Controller>();
 	}
 
     public override void PhysUpdate()

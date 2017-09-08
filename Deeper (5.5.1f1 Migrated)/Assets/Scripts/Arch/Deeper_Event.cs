@@ -156,3 +156,16 @@ public class Deeper_Event_Nav : Deeper_Event
 }
 
 public class Deeper_Event_NavBeaconPing : Deeper_Event { }
+
+//--------------------------------------------
+// UI
+//--------------------------------------------
+
+public class Deeper_Event_BattLvl : Deeper_Event
+{
+    public float level;
+    public Deeper_Event_BattLvl (float chargeLevel)
+    {
+        level = chargeLevel;
+    }
+}

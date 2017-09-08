@@ -29,6 +29,8 @@ public class Controlled_Character : Deeper_Component, ICurrentable {
 
     public SphereCollider ingressTrigger;
 
+    public TMPro.TextMeshPro narcTM;
+
     [HideInInspector] public bool airAvailable;
 
     #region Internal Variables
@@ -653,6 +655,7 @@ public class Controlled_Character : Deeper_Component, ICurrentable {
             narcRemapTimer = 0;
             narcRemapRollover = Random.Range(.7f, 1.5f);
             PerformRemap();
+            Context.narcTM.text = "N2: Danger";
         }
 
         private float narcRemapTimer;
@@ -724,7 +727,12 @@ public class Controlled_Character : Deeper_Component, ICurrentable {
                 }
             }
 
+
             narcDurationTimer += Time.deltaTime;
+            if (narcDurationTimer > 20)
+            {
+                Context.narcTM.text = "N2: High";
+            }
             if (narcDurationTimer >= 35)
             {
                 TransitionTo<Floating>();
@@ -734,6 +742,7 @@ public class Controlled_Character : Deeper_Component, ICurrentable {
         public override void OnExit()
         {
             base.OnExit();
+            Context.narcTM.text = "N2: Low";
         }
     }
 
