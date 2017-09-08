@@ -34,6 +34,6 @@ public class InteractionEffects_SmokeMonster : InteractionEffects_Base
         else
             OpsVersion.Fire();
         foreach (GameObject g in ObjectsToEnableAfter)
-            g.SetActive(false);
+            g.SetActive(true);
     }
 }

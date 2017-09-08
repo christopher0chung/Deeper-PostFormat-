@@ -9,13 +9,8 @@ using Rewired;
 
 public class Game_DialogueManager : Deeper_Component {
 
-    private Game_CameraController _myGCG;
     private AudioSource _myAS;
     private AudioClip _activeLineClip;
-
-    private GameObject cam_com;
-    private GameObject cam_c1;
-    private GameObject cam_c2;
 
     private bool singleFalseSplitTrue;
 
@@ -61,11 +56,7 @@ public class Game_DialogueManager : Deeper_Component {
     #region Internal Functions
     private void _GetRefs()
     {
-        _myGCG = GameObject.Find("Managers_Game").GetComponent<Game_CameraController>();
         _myAS = GetComponent<AudioSource>();
-        cam_com = _myGCG.cam_com;
-        cam_c1 = _myGCG.cam_c1;
-        cam_c2 = _myGCG.cam_c2;
     }
 
     private void _CamEvents(Deeper_Event e)

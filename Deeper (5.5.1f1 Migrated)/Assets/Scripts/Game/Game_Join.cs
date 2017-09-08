@@ -117,7 +117,7 @@ public class Game_Join : MonoBehaviour {
             //Debug.Log("Both connected");
             if (ReInput.players.GetPlayer(0).GetButtonDown("Start") || ReInput.players.GetPlayer(1).GetButtonDown("Start"))
             {
-                SceneManager.LoadScene(1);
+                SceneManager.LoadScene(3);
                 Deeper_ServicesLocator.instance.SFXManager.PlaySoundOneHit(SFX.Select);
 
                 //Debug.Log("Ready to play");
