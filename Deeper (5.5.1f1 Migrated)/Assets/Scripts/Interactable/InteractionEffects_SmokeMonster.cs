@@ -7,8 +7,11 @@ public class InteractionEffects_SmokeMonster : InteractionEffects_Base
     public Dialogue_Org_Conversation OpsVersion;
     public Dialogue_Org_Conversation DocVersion;
 
+    public GameObject TriggerToEnableAfter;
+
     private void Start()
     {
+        TriggerToEnableAfter.SetActive(false);
     }
 
     public override void OnInteractedSuccess()
@@ -28,5 +31,6 @@ public class InteractionEffects_SmokeMonster : InteractionEffects_Base
             DocVersion.Fire();
         else
             OpsVersion.Fire();
+        TriggerToEnableAfter.SetActive(true);
     }
 }

@@ -6,7 +6,7 @@ public class InteractionEffects_Standard : InteractionEffects_Base
 {
     public Interactable_Base[] interactablesToEnable;
     public Dialogue_Org_Conversation conversationToFire;
-    public Dialogue_Org_Conversation conversationToDisable;
+    public GameObject conversationToDisable;
 
     public override void OnInteractedSuccess()
     {
@@ -17,7 +17,7 @@ public class InteractionEffects_Standard : InteractionEffects_Base
         }
 
         if (conversationToDisable != null)
-            conversationToDisable.enabled = false;
+            conversationToDisable.SetActive(false);
 
         if (conversationToFire != null)
             conversationToFire.Fire();
