@@ -40,7 +40,7 @@ Shader "Hidden/Shader Forge/SFN_Transform" {
                 o.normalDir = UnityObjectToWorldNormal(v.normal);
                 o.tangentDir = normalize( mul( unity_ObjectToWorld, float4( v.tangent.xyz, 0.0 ) ).xyz );
                 o.bitangentDir = normalize(cross(o.normalDir, o.tangentDir) * v.tangent.w);
-                o.pos = mul(UNITY_MATRIX_MVP, v.vertex );
+                o.pos = UnityObjectToClipPos(v.vertex );
                 return o;
             }
             float4 frag(VertexOutput i) : COLOR {
@@ -76,7 +76,7 @@ Shader "Hidden/Shader Forge/SFN_Transform" {
                 	} else if(_ToSpace == 2){ 
                 		outputColor.xyz = mul( tangentTransform, mul( unity_ObjectToWorld, _in ).xyz );	// Local To Tangent
                 	} else if(_ToSpace == 3){ 
-                		outputColor = mul( UNITY_MATRIX_MV, _in );								// Local To View
+                		outputColor = UnityObjectToViewPos( _in ).xyzz;								// Local To View
                 	}
                 } else if( _FromSpace = 2 ){
                 	if(_ToSpace == 0){ 

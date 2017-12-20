@@ -1,3 +1,5 @@
+// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
 // Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
 
 // Shader created with Shader Forge v1.36 
@@ -56,7 +58,7 @@ Shader "Shader Forge/BubbleVertDisp" {
                 float4 node_5122 = _Time + _TimeEditor;
                 v.vertex.xyz += float3(((sin(((10.0*(mul(unity_ObjectToWorld, v.vertex).r+(mul(unity_ObjectToWorld, v.vertex).b*_Z_OffsetMultiplier*mul(unity_ObjectToWorld, v.vertex).g)))+(node_5122.g*20.0)))*0.01)/objScale.r),((sin(((6.0*mul(unity_ObjectToWorld, v.vertex).g)+(node_5122.g*5.0)))*0.1)/objScale.g),0.0);
                 o.posWorld = mul(unity_ObjectToWorld, v.vertex);
-                o.pos = mul(UNITY_MATRIX_MVP, float4(v.vertex.xyz + v.normal*_LineThickness,1) );
+                o.pos = UnityObjectToClipPos(float4(v.vertex.xyz + v.normal*_LineThickness,1) );
                 return o;
             }
             float4 frag(VertexOutput i, float facing : VFACE) : COLOR {
@@ -117,7 +119,7 @@ Shader "Shader Forge/BubbleVertDisp" {
                 v.vertex.xyz += float3(((sin(((10.0*(mul(unity_ObjectToWorld, v.vertex).r+(mul(unity_ObjectToWorld, v.vertex).b*_Z_OffsetMultiplier*mul(unity_ObjectToWorld, v.vertex).g)))+(node_5122.g*20.0)))*0.01)/objScale.r),((sin(((6.0*mul(unity_ObjectToWorld, v.vertex).g)+(node_5122.g*5.0)))*0.1)/objScale.g),0.0);
                 o.posWorld = mul(unity_ObjectToWorld, v.vertex);
                 float3 lightColor = _LightColor0.rgb;
-                o.pos = mul(UNITY_MATRIX_MVP, v.vertex );
+                o.pos = UnityObjectToClipPos(v.vertex );
                 o.screenPos = o.pos;
                 TRANSFER_VERTEX_TO_FRAGMENT(o)
                 return o;
@@ -292,7 +294,7 @@ Shader "Shader Forge/BubbleVertDisp" {
                 v.vertex.xyz += float3(((sin(((10.0*(mul(unity_ObjectToWorld, v.vertex).r+(mul(unity_ObjectToWorld, v.vertex).b*_Z_OffsetMultiplier*mul(unity_ObjectToWorld, v.vertex).g)))+(node_5122.g*20.0)))*0.01)/objScale.r),((sin(((6.0*mul(unity_ObjectToWorld, v.vertex).g)+(node_5122.g*5.0)))*0.1)/objScale.g),0.0);
                 o.posWorld = mul(unity_ObjectToWorld, v.vertex);
                 float3 lightColor = _LightColor0.rgb;
-                o.pos = mul(UNITY_MATRIX_MVP, v.vertex );
+                o.pos = UnityObjectToClipPos(v.vertex );
                 o.screenPos = o.pos;
                 TRANSFER_VERTEX_TO_FRAGMENT(o)
                 return o;
@@ -408,7 +410,7 @@ Shader "Shader Forge/BubbleVertDisp" {
                 float4 node_5122 = _Time + _TimeEditor;
                 v.vertex.xyz += float3(((sin(((10.0*(mul(unity_ObjectToWorld, v.vertex).r+(mul(unity_ObjectToWorld, v.vertex).b*_Z_OffsetMultiplier*mul(unity_ObjectToWorld, v.vertex).g)))+(node_5122.g*20.0)))*0.01)/objScale.r),((sin(((6.0*mul(unity_ObjectToWorld, v.vertex).g)+(node_5122.g*5.0)))*0.1)/objScale.g),0.0);
                 o.posWorld = mul(unity_ObjectToWorld, v.vertex);
-                o.pos = mul(UNITY_MATRIX_MVP, v.vertex );
+                o.pos = UnityObjectToClipPos(v.vertex );
                 TRANSFER_SHADOW_CASTER(o)
                 return o;
             }

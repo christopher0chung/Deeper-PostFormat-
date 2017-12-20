@@ -12,6 +12,7 @@ public class HxVolumetricShadersUsed : ScriptableObject
 {
 
 
+
    
     public HxVolumetricCamera.TransparencyQualities TransperencyQuality = HxVolumetricCamera.TransparencyQualities.Medium;
     public HxVolumetricCamera.DensityParticleQualities DensityParticleQuality = HxVolumetricCamera.DensityParticleQualities.High;
@@ -262,7 +263,7 @@ public class HxVolumetricShadersUsed : ScriptableObject
     {
 
         ShaderVariantList.Clear();
-        bool shadows = false;
+       
 
         int v = i;
         int vc = 0;
@@ -272,7 +273,7 @@ public class HxVolumetricShadersUsed : ScriptableObject
         if (v >= 8) { if (!HeightFog) { return; } ShaderVariantList.Add("HEIGHTFOG_ON"); v -= 8; vc++; } else { if (!HeightFogOff) { return; } }
         if (v >= 4) { if (!Noise) { return; } ShaderVariantList.Add("NOISE_ON"); v -= 4; vc++; } else { if (!NoiseOff) { return; } }
         if (v >= 2) { if (point) { ShaderVariantList.Add("POINT_COOKIE"); vc++; } v -= 2; }
-        if (v >= 1) { v -= 1; shadows = true; } else { if (!projector) { ShaderVariantList.Add("SHADOWS_OFF"); } vc++; };
+        if (v >= 1) { v -= 1; } else { if (!projector) { ShaderVariantList.Add("SHADOWS_OFF"); } vc++; };
 
 
         string[] fv = new string[vc];
@@ -291,23 +292,23 @@ public class HxVolumetricShadersUsed : ScriptableObject
        // Debug.Log(final);
         ShaderVariantCollection.ShaderVariant varient = new ShaderVariantCollection.ShaderVariant(source, PassType.Normal, fv);
         if (!collection.Contains(varient)) { collection.Add(varient); }
-        if (shadows && !point && !projector)
-        {
-            ShaderVariantList.Add("SHADOWS_NATIVE");
-            string[] fv2 = new string[vc + 1];
-            ShaderVariantList.CopyTo(fv2);
-
-            ShaderVariantCollection.ShaderVariant varient2 = new ShaderVariantCollection.ShaderVariant(source, PassType.Normal, fv2);
-            if (!collection.Contains(varient2)) { collection.Add(varient2); }
-
-            Material m2 = new Material(source);
-            EnableKeywordList(m2);
-            m2.name = "";
-            AssetDatabase.AddObjectToAsset(m2, collection);
-            ShaderVariantList.RemoveAt(ShaderVariantList.Count - 1);
-
-
-        }
+        //if (shadows && !point && !projector)
+        //{
+        //    ShaderVariantList.Add("SHADOWS_NATIVE");
+        //    string[] fv2 = new string[vc + 1];
+        //    ShaderVariantList.CopyTo(fv2);
+        //
+        //    ShaderVariantCollection.ShaderVariant varient2 = new ShaderVariantCollection.ShaderVariant(source, PassType.Normal, fv2);
+        //    if (!collection.Contains(varient2)) { collection.Add(varient2); }
+        //
+        //    Material m2 = new Material(source);
+        //    EnableKeywordList(m2);
+        //    m2.name = "";
+        //    AssetDatabase.AddObjectToAsset(m2, collection);
+        //    ShaderVariantList.RemoveAt(ShaderVariantList.Count - 1);
+        //
+        //
+        //}
 
         if (SinglePassStereo)
         {
@@ -323,21 +324,21 @@ public class HxVolumetricShadersUsed : ScriptableObject
             m2.name = "";
             AssetDatabase.AddObjectToAsset(m2, collection);
 
-            if (shadows && !point && !projector)
-            {
-                ShaderVariantList.Add("SHADOWS_NATIVE");
-                string[] fv2 = new string[vc + 2];
-                ShaderVariantList.CopyTo(fv2);
-
-                ShaderVariantCollection.ShaderVariant varient2 = new ShaderVariantCollection.ShaderVariant(source, PassType.Normal, fv2);
-                if (!collection.Contains(varient2)) { collection.Add(varient2); }
-
-                Material m3 = new Material(source);
-                EnableKeywordList(m3);
-                m3.name = "";
-                AssetDatabase.AddObjectToAsset(m3, collection);
-
-            }
+           // if (shadows && !point && !projector)
+           // {
+           //     ShaderVariantList.Add("SHADOWS_NATIVE");
+           //     string[] fv2 = new string[vc + 2];
+           //     ShaderVariantList.CopyTo(fv2);
+           //
+           //     ShaderVariantCollection.ShaderVariant varient2 = new ShaderVariantCollection.ShaderVariant(source, PassType.Normal, fv2);
+           //     if (!collection.Contains(varient2)) { collection.Add(varient2); }
+           //
+           //     Material m3 = new Material(source);
+           //     EnableKeywordList(m3);
+           //     m3.name = "";
+           //     AssetDatabase.AddObjectToAsset(m3, collection);
+           //
+           // }
         }
     }
 

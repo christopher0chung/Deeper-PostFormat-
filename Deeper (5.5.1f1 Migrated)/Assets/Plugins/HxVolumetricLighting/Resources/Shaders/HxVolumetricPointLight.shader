@@ -82,22 +82,36 @@ samplerCUBE PointCookieTexture;
 	float3 ShadowBias;
 #ifndef SHADOWS_OFF
 
-	
+
 	float ShadowDistance;
 	//uniform samplerCUBE_float _ShadowMapTexture;
 
-	inline float CustomSampleCubeDistance(float3 vec)
-	{
-		return UnityDecodeCubeShadowDepth(texCUBElod(_ShadowMapTexture, float4(vec.xyz,0)));
-	}
-	
 	inline half CustomSampleShadowmap(float3 vec)
 	{
+#if defined (SHADOWS_CUBE_IN_DEPTH_TEX)
+
+		float3 absVec = abs(vec);
+		float dominantAxis = max(max(absVec.x, absVec.y), absVec.z); // TODO use max3() instead
+		dominantAxis = max(0.00001, dominantAxis - _LightProjectionParams.z); // shadow bias from point light is apllied here.
+		dominantAxis *= _LightProjectionParams.w; // bias
+		float mydist = -_LightProjectionParams.x + _LightProjectionParams.y / dominantAxis; // project to shadow map clip space [0; 1]
+
+#if defined(UNITY_REVERSED_Z)
+		mydist = 1.0 - mydist; // depth buffers are reversed! Additionally we can move this to CPP code!
+#endif
+
+		half shadow = UNITY_SAMPLE_TEXCUBE_SHADOW(_ShadowMapTexture, float4(vec, mydist));
+		return lerp(_LightShadowData.r, 1.0, shadow);
+
+
+#else 
+
 		float mydist = ((length(vec) + ShadowBias.x) * _LightParams.y);
-		
-		float dist = CustomSampleCubeDistance(vec);
-	
+
+		float dist = SampleCubeDistance(vec);
+
 		return dist < mydist ? 0 : 1.0;
+#endif
 	}
 #endif
 
