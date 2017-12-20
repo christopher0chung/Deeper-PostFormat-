@@ -101,7 +101,7 @@ public class Nav_NavBeacon : Deeper_Component
         public override void OnEnter()
         {
             circle = new Vector3[Context.unitCircle.Length];
-            Context.GetComponent<LineRenderer>().numPositions = circle.Length;
+            Context.GetComponent<LineRenderer>().positionCount = circle.Length;
             Context.radius = 0;
             Context._toggleLightOnYet = false;
             timer = 0;
@@ -148,7 +148,7 @@ public class Nav_NavBeacon : Deeper_Component
         public override void OnEnter()
         {
             circle = new Vector3[Context.unitCircle.Length];
-            Context.GetComponent<LineRenderer>().numPositions = circle.Length;
+            Context.GetComponent<LineRenderer>().positionCount = circle.Length;
             Context.radius = 0;
             Context._toggleLightOnYet = false;
             timer = 0;

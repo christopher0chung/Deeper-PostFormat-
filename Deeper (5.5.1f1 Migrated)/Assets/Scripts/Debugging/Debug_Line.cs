@@ -57,7 +57,7 @@ public class Debug_Line : MonoBehaviour {
         public override void OnEnter()
         {
             circle = new Vector3[Context.unitCircle.Length];
-            Context.GetComponent<LineRenderer>().numPositions = circle.Length;
+            Context.GetComponent<LineRenderer>().positionCount = circle.Length;
             Context.radius = 0;
         }
 
